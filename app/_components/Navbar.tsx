@@ -1,22 +1,20 @@
-import { Search } from "lucide-react";
 import React from "react";
+import NavbarRoutes from "./NavbarRoutes";
+import MobileSidebar from "./MobileSidebar";
+import { Category } from "@prisma/client";
 
-const Navbar = () => {
+type NavbarProps = {
+  categories: Category[];
+};
+
+const Navbar = ({ categories }: NavbarProps) => {
   return (
     <div
-      className="h-[60px] w-full fixed top-0 bg-primary
-  border-b border-white border-opacity-[0.05] ml-[300px] px-8 text-white flex items-center"
+      className="h-[60px] px-4 border-b border-white border-opacity-[0.05] flex items-center
+      bg-primary shadow-sm transition-all duration-300"
     >
-      <div className="relative">
-        <Search className="h-4 w-4 absolute top-4 left-3 text-border" />
-        <input
-          type="text"
-          name=""
-          id=""
-          placeholder="Поиск по тексту..."
-          className="w-full md:w-[300px] pl-9 rounded-md bg-background h-12 outline-none focus:outline-link"
-        />
-      </div>
+      <MobileSidebar categories={categories} />
+      <NavbarRoutes />
     </div>
   );
 };

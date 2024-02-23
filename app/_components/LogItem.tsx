@@ -1,14 +1,25 @@
 import React from "react";
 
-const LogItem = () => {
+type LogItemProps = {
+  category: number;
+  text: string;
+  date: Date;
+};
+
+const LogItem = ({ category, text, date }: LogItemProps) => {
+  const formattedDate =
+    date.toLocaleString("en-US", { month: "short", day: "numeric" }) +
+    ", " +
+    date.toLocaleTimeString("ru-RU", { hour: "numeric", minute: "2-digit" });
+
   return (
     <div
       className="w-full h-[55px] border-t border-white border-opacity-[0.09] text-white 
         flex items-center py-2 px-4 text-lg"
     >
       <p>
-        <span className="text-secondary">13 Feb, 18:41</span>{" "}
-        <span className="text-link font-semibold">Феликс</span> упал с лестницы
+        <span className="text-secondary">{formattedDate}</span>{" "}
+        <span className="text-link font-semibold">{text}</span> упал с лестницы
         и пернул
       </p>
     </div>
