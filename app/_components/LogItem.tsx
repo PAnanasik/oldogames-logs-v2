@@ -1,7 +1,7 @@
 import React from "react";
 
 type LogItemProps = {
-  category: number;
+  category: string;
   text: string;
   date: Date;
 };
@@ -19,8 +19,7 @@ const LogItem = ({ category, text, date }: LogItemProps) => {
     >
       <p>
         <span className="text-secondary">{formattedDate}</span>{" "}
-        <span className="text-link font-semibold">{text}</span> упал с лестницы
-        и пернул
+        <span className="text-link font-semibold">{text}</span>
       </p>
     </div>
   );

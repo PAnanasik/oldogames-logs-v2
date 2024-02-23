@@ -1,18 +1,18 @@
-import { Category } from "@prisma/client";
+import { Category, Gamemode } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
-import FiltrationItem from "./FiltrationItem";
+import CategorieItem from "./CategorieItem";
+import GamemodeItem from "./GamemodeItem";
 
 type SidebarProps = {
   categories: Category[];
+  gamemodes: Gamemode[];
 };
 
-const Sidebar = ({ categories }: SidebarProps) => {
+const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-primary border-r border-white border-opacity-[0.05] w-full">
-      <div
-        className=" text-white flex flex-col h-full w-full"
-      >
+      <div className=" text-white flex flex-col h-full w-full">
         <div
           className="h-[60px] border-b border-white border-opacity-[0.05] w-full flex items-center justify-between
         px-4"
@@ -21,10 +21,20 @@ const Sidebar = ({ categories }: SidebarProps) => {
           <Image width={30} height={30} src="/logo.png" alt="logo image" />
         </div>
         <div className="px-4 space-y-4 mt-4">
-          <h2 className="text-secondary font-medium text-lg">Фильтры</h2>
-          <div className="flex flex-col w-full space-y-4">
+          <h2 className="text-secondary font-medium text-lg">Режимы</h2>
+          <div className="grid md:grid-cols-2 gap-2">
+            {gamemodes?.map((gamemode) => (
+              <GamemodeItem
+                key={gamemode.id}
+                id={gamemode.id}
+                name={gamemode.name}
+              />
+            ))}
+          </div>
+          <h2 className="text-secondary font-medium text-lg">Категории</h2>
+          <div className="flex items-center gap-2 pb-2 flex-wrap">
             {categories?.map((category) => (
-              <FiltrationItem
+              <CategorieItem
                 key={category.id}
                 id={category.id}
                 name={category.name}

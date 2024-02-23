@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Box, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import SearchInput from "./SearchInput";
 
 const NavbarRoutes = () => {
   const [showModal, setShowModal] = useState(false);
@@ -19,15 +20,8 @@ const NavbarRoutes = () => {
 
   return (
     <nav className="w-full h-full text-white bg-primary flex items-center justify-between px-4 gap-x-8">
-      <div className="relative md:ml-96 w-full">
-        <Search className="h-4 w-4 absolute inset-4 text-border" />
-        <input
-          type="text"
-          name=""
-          id=""
-          placeholder="Поиск по тексту..."
-          className="w-full md:w-[300px] pl-10 rounded-md bg-background h-12 outline-none focus:outline-link"
-        />
+      <div className="md:pl-96 w-full">
+        <SearchInput />
       </div>
       <div className="cursor-pointer" onClick={() => setShowModal(!showModal)}>
         <Box className={cn("h-6 w-6", showModal && "text-link")} />
