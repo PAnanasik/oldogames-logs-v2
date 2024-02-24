@@ -1,8 +1,6 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
-import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import qs from "query-string";
 import { cn } from "@/lib/utils";
@@ -47,12 +45,9 @@ const CategorieItem = ({ id, name }: CategorieItemProps) => {
         "py-2 px-3 text-sm border border-white border-opacity-[0.1] rounded-full flex items-center gap-x-1 hover:bg-link/10 transition hover:text-link",
         isSelected && "border-link bg-link/10 text-link font-medium"
       )}
-      data-tooltip-content={`ID категории ${name.toLocaleLowerCase()}: ${id}`}
-      data-tooltip-id="category-tooltip"
       type="button"
     >
       <div className="truncate">{name}</div>
-      <Tooltip id="category-tooltip" />
     </button>
   );
 };

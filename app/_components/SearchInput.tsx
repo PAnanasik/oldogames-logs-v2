@@ -16,6 +16,7 @@ const SearchInput = () => {
   const pathname = usePathname();
 
   const currentCategoryId = searchParams?.get("categoryId");
+  const currentGamemodeId = searchParams?.get("gamemodeId");
 
   useEffect(() => {
     const url = queryString.stringifyUrl(
@@ -23,13 +24,14 @@ const SearchInput = () => {
         url: pathname || "",
         query: {
           categoryId: currentCategoryId,
+          gamemodeId: currentGamemodeId,
           text: debouncedValue,
         },
       },
       { skipNull: true, skipEmptyString: true }
     );
     router.push(url);
-  }, [debouncedValue, currentCategoryId, router, pathname]);
+  }, [debouncedValue, currentCategoryId, router, pathname, currentGamemodeId]);
 
   return (
     <div className="relative">

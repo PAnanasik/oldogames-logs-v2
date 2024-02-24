@@ -1,8 +1,18 @@
+"use client";
 import { Category, Gamemode } from "@prisma/client";
 import Image from "next/image";
-import React from "react";
 import CategorieItem from "./CategorieItem";
 import GamemodeItem from "./GamemodeItem";
+import {
+  AlignLeft,
+  Folder,
+  GalleryVerticalEnd,
+  Grid,
+  LayoutDashboard,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { Tooltip } from "react-tooltip";
 
 type SidebarProps = {
   categories: Category[];
@@ -10,19 +20,64 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
+  const [layout, setLayout] = useState("list");
+
+  useEffect(() => {
+    const layoutMode =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem("layout")
+        : null;
+    if (layoutMode) {
+      setLayout(layoutMode);
+    }
+  }, []);
+
+  const handleClick = () => {
+    setLayout((prevLayout) => {
+      const newLayout = prevLayout === "list" ? "grid" : "list";
+      localStorage.setItem("layout", newLayout);
+      return newLayout;
+    });
+  };
+
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-primary border-r border-white border-opacity-[0.05] w-full">
       <div className=" text-white flex flex-col h-full w-full">
         <div
-          className="h-[60px] border-b border-white border-opacity-[0.05] w-full flex items-center justify-between
-        px-4"
+          className="h-[60px] border-b border-white border-opacity-[0.05] w-full flex items-center md:justify-between
+        px-4 md:gap-x-0 gap-x-2"
         >
           <h2 className="text-lg font-medium">Oldogames Logs</h2>
           <Image width={30} height={30} src="/logo.png" alt="logo image" />
         </div>
         <div className="px-4 space-y-4 mt-4">
-          <h2 className="text-secondary font-medium text-lg">Режимы</h2>
-          <div className="grid md:grid-cols-2 gap-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <Folder className="h-4 w-4 mr-1 text-secondary" />
+              <h2 className="text-secondary font-medium text-lg">Режимы</h2>
+            </div>
+            <button
+              onClick={handleClick}
+              data-tooltip-content={`Режим ${layout}`}
+              data-tooltip-id="layout-tooltip"
+              className="md:block hidden hover:bg-secondary/15 rounded-full ease duration-300"
+            >
+              {layout === "grid" ? (
+                <Grid className={cn("text-link w-8 h-8 p-2")} />
+              ) : (
+                <GalleryVerticalEnd
+                  className={cn("text-secondary w-8 h-8 p-2")}
+                />
+              )}
+            </button>
+            <Tooltip id="layout-tooltip" />
+          </div>
+          <div
+            className={cn(
+              "grid md:grid-cols-2 gap-2",
+              layout === "list" && "flex flex-col"
+            )}
+          >
             {gamemodes?.map((gamemode) => (
               <GamemodeItem
                 key={gamemode.id}
@@ -31,7 +86,10 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
               />
             ))}
           </div>
-          <h2 className="text-secondary font-medium text-lg">Категории</h2>
+          <div className="flex items-center">
+            <AlignLeft className="h-4 w-4 mr-1 text-secondary" />
+            <h2 className="text-secondary font-medium text-lg">Категории</h2>
+          </div>
           <div className="flex items-center gap-2 pb-2 flex-wrap">
             {categories?.map((category) => (
               <CategorieItem

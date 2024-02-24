@@ -76,3 +76,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+#box-modal::-webkit-scrollbar {
+  width: 4px;
+}
+
+#box-modal::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+#box-modal::-webkit-scrollbar-thumb {
+  background: hsl(var(--secondary));
+  border-radius: 2px;
+}

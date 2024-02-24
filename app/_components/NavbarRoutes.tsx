@@ -1,9 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Box, Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { Box } from "lucide-react";
+import { useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
+import LogItem from "./LogItem";
+import BoxPanel from "./BoxPanel";
+import Modal from "./Modal";
 
 const NavbarRoutes = () => {
   const [showModal, setShowModal] = useState(false);
@@ -18,28 +21,29 @@ const NavbarRoutes = () => {
     return () => window.removeEventListener("keydown", close);
   });
 
+  const currentLogs =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("logs") || "[]")
+      : [];
+
+  console.log(
+    currentLogs.map((log: { formattedDateLogs: string; text: string }) =>
+      console.log(log)
+    )
+  );
+
   return (
-    <nav className="w-full h-full text-white bg-primary flex items-center justify-between px-4 gap-x-8">
+    <nav className="w-full h-full text-white bg-primary flex items-center justify-between gap-x-4">
       <div className="md:pl-96 w-full">
         <SearchInput />
       </div>
-      <div className="cursor-pointer" onClick={() => setShowModal(!showModal)}>
-        <Box className={cn("h-6 w-6", showModal && "text-link")} />
+      <div
+        className="cursor-pointer hover:bg-secondary/15 rounded-full ease duration-300"
+        onClick={() => setShowModal(!showModal)}
+      >
+        <Box className={cn("h-9 w-9 p-2", showModal && "text-link")} />
       </div>
-      {showModal && (
-        <div
-          className="fixed md:right-[10px] md:left-auto left-0 right-0 mx-auto top-[75px] md:w-[470px] w-[98%] h-[300px] rounded-md bg-primary
-        border border-white border-opacity-[0.05]"
-          id="modal"
-        >
-          <div className="w-full h-full flex justify-center items-center flex-col">
-            <h2 className="text-lg font-medium text-secondary">
-              Пока здесь пусто...
-            </h2>
-            <p className="text-secondary">Здесь будут добавленные логи</p>
-          </div>
-        </div>
-      )}
+      {showModal && <Modal currentLogs={currentLogs} />}
     </nav>
   );
 };

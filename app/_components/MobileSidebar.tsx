@@ -12,7 +12,7 @@ const MobileSidebar = ({ categories, gamemodes }: MobileSidebarProps) => {
   return (
     <Sheet>
       <SheetTrigger className="pr-4 md:hidden">
-        <Menu size={32} className="text-white" />
+        <Menu className="text-white h-8 w-8" />
       </SheetTrigger>
       <SheetContent
         side={"left"}

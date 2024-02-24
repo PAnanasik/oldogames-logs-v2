@@ -1,4 +1,3 @@
-import React from "react";
 import LogItem from "./LogItem";
 import { Log } from "@prisma/client";
 import Image from "next/image";
@@ -9,13 +8,13 @@ type LogsProps = {
 
 const Logs = ({ logs }: LogsProps) => {
   return (
-    <div className="md:pl-96 [&>*:last-child]:border-b-transparent">
+    <div className="md:pl-96 [&>*:last-child]:border-b-transparent [&>*:first-child]:border-t-transparent">
       {logs?.map((log) => (
         <LogItem
           key={log.id}
-          category={log.categoryId}
           text={log.text}
           date={log.createdAt}
+          copy={false}
         />
       ))}
       {logs.length === 0 && (

@@ -1,4 +1,3 @@
-import React from "react";
 import NavbarRoutes from "./NavbarRoutes";
 import MobileSidebar from "./MobileSidebar";
 import { Category, Gamemode } from "@prisma/client";

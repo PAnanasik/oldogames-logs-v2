@@ -1,12 +1,10 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import qs from "query-string";
 import { cn } from "@/lib/utils";
-import { GalleryVerticalEnd } from "lucide-react";
 
 type GamemodeItemProps = {
   id: string;
@@ -45,16 +43,15 @@ const GamemodeItem = ({ id, name }: GamemodeItemProps) => {
     <button
       onClick={onClick}
       className={cn(
-        "py-3 px-2 text-sm border border-white border-opacity-[0.1] rounded-lg flex items-center gap-x-1 hover:bg-link/10 transition hover:text-link w-full",
+        "py-3 px-3 text-sm border border-white border-opacity-[0.1] rounded-lg flex items-center gap-x-1 hover:bg-link/10 transition hover:text-link w-full",
         isSelected && "border-link bg-link/10 text-link font-medium"
       )}
-      data-tooltip-content={`ID режима ${name.toLocaleLowerCase()}: ${id}`}
+      data-tooltip-content={`${name}`}
       data-tooltip-id="gamemode-tooltip"
       type="button"
     >
-      <GalleryVerticalEnd className="h-4 w-4 mr-1" />
       <div className="truncate">{name}</div>
-      <Tooltip id="gamemode-tooltip" />
+      <Tooltip id="gamemode-tooltip" className="md:block hidden" />
     </button>
   );
 };
