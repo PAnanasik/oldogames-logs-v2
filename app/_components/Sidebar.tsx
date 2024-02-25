@@ -63,7 +63,7 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
               className="md:block hidden hover:bg-secondary/15 rounded-full ease duration-300"
             >
               {layout === "grid" ? (
-                <Grid className={cn("text-link w-8 h-8 p-2")} />
+                <Grid className={cn("text-secondary w-8 h-8 p-2")} />
               ) : (
                 <GalleryVerticalEnd
                   className={cn("text-secondary w-8 h-8 p-2")}

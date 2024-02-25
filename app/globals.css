@@ -77,15 +77,15 @@
   }
 }
 
-#box-modal::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 4px;
 }
 
-#box-modal::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: hsl(var(--background));
 }
 
-#box-modal::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: hsl(var(--secondary));
   border-radius: 2px;
 }

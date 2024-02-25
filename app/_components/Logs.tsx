@@ -12,6 +12,7 @@ const Logs = ({ logs }: LogsProps) => {
       {logs?.map((log) => (
         <LogItem
           key={log.id}
+          id={log.id}
           text={log.text}
           date={log.createdAt}
           copy={false}

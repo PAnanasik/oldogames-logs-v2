@@ -8,10 +8,11 @@ import { toast } from "sonner";
 type LogItemProps = {
   text: string;
   date: Date;
-  copy: Boolean;
+  id: number;
+  copy: boolean;
 };
 
-const LogItem = ({ text, copy, date }: LogItemProps) => {
+const LogItem = ({ text, copy, date, id }: LogItemProps) => {
   const formattedDate =
     date.toLocaleString("en-US", { month: "short", day: "numeric" }) +
     ", " +
@@ -29,17 +30,36 @@ const LogItem = ({ text, copy, date }: LogItemProps) => {
       second: "2-digit",
     });
 
+  const copyTextToClipboard = async ({
+    formattedDateLogs,
+    text,
+  }: {
+    formattedDateLogs: string;
+    text: string;
+  }) => {
+    try {
+      const formattedLog = `\`\`\`js\n${formattedDateLogs} ${text}\n\`\`\``;
+      await navigator.clipboard.writeText(formattedLog);
+
+      toast.success("Лог скопирован в буфер обмена");
+    } catch (error) {
+      toast.error("Не удалось скопировать текст");
+    }
+  };
+
   const handleAddToLocalStorage = () => {
     const currentLogs =
       typeof window !== "undefined"
         ? JSON.parse(localStorage.getItem("logs") || "[]")
         : [];
     const logExists = currentLogs.some(
-      (log: any) =>
-        log.formattedDateLogs === formattedDateLogs && log.text === text
+      (log: { formattedDateLogs: string; text: string; id: number }) =>
+        log.formattedDateLogs === formattedDateLogs &&
+        log.text === text &&
+        log.id === id
     );
     if (!logExists) {
-      currentLogs.push({ formattedDateLogs, text });
+      currentLogs.push({ formattedDateLogs, text, id });
       localStorage.setItem("logs", JSON.stringify(currentLogs));
       setLogExists(true);
       toast.success("Лог успешно добавлен");
@@ -52,8 +72,12 @@ const LogItem = ({ text, copy, date }: LogItemProps) => {
         ? JSON.parse(localStorage.getItem("logs") || "[]")
         : [];
     const updatedLogs = currentLogs.filter(
-      (log: { formattedDateLogs: string; text: string }) =>
-        !(log.formattedDateLogs === formattedDateLogs && log.text === text)
+      (log: { formattedDateLogs: string; text: string; id: number }) =>
+        !(
+          log.formattedDateLogs === formattedDateLogs &&
+          log.text === text &&
+          log.id === id
+        )
     );
     localStorage.setItem("logs", JSON.stringify(updatedLogs));
     setLogExists(false);
@@ -68,11 +92,13 @@ const LogItem = ({ text, copy, date }: LogItemProps) => {
         ? JSON.parse(localStorage.getItem("logs") || "[]")
         : [];
     const exists = currentLogs.some(
-      (log: { formattedDateLogs: string; text: string }) =>
-        log.formattedDateLogs === formattedDateLogs && log.text === text
+      (log: { formattedDateLogs: string; text: string; id: number }) =>
+        log.formattedDateLogs === formattedDateLogs &&
+        log.text === text &&
+        log.id === id
     );
     setLogExists(exists);
-  }, [formattedDateLogs, text]);
+  }, [formattedDateLogs, text, id]);
 
   return (
     <div
@@ -108,7 +134,10 @@ const LogItem = ({ text, copy, date }: LogItemProps) => {
           </button>
         )}
         {logExists && copy && (
-          <button className="hover:bg-secondary/15 rounded-full ease duration-300">
+          <button
+            className="hover:bg-secondary/15 rounded-full ease duration-300"
+            onClick={() => copyTextToClipboard({ formattedDateLogs, text })}
+          >
             <Copy className="w-8 h-8 p-2 text-link" />
           </button>
         )}
