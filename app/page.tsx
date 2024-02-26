@@ -1,6 +1,4 @@
-import Image from "next/image";
 import Sidebar from "./_components/Sidebar";
-import LogItem from "./_components/LogItem";
 import Navbar from "./_components/Navbar";
 import Logs from "./_components/Logs";
 import prisma from "@/app/libs/prismadb";
@@ -15,7 +13,6 @@ type SearchPageProps = {
 };
 
 export default async function Home({ searchParams }: SearchPageProps) {
-  // const users = await prisma.qadmin_players.findMany();
   const logs = await prisma.log.findMany({
     where: {
       text: {
@@ -42,7 +39,7 @@ export default async function Home({ searchParams }: SearchPageProps) {
   return (
     <>
       <main className="h-full">
-        <div className="h-[60px]">
+        <div className="h-[50px]">
           <Navbar categories={categories} gamemodes={gamemodes} />
         </div>
         <div className="hidden md:flex h-full w-96 flex-col fixed inset-y-0 z-50">

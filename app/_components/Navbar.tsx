@@ -10,7 +10,7 @@ type NavbarProps = {
 const Navbar = ({ categories, gamemodes }: NavbarProps) => {
   return (
     <div
-      className="h-[60px] px-4 border-b border-white border-opacity-[0.05] flex items-center
+      className="h-[50px] px-4 border-b border-white border-opacity-[0.05] flex items-center
       bg-primary shadow-sm transition-all duration-300 fixed top-0 w-full"
     >
       <MobileSidebar categories={categories} gamemodes={gamemodes} />

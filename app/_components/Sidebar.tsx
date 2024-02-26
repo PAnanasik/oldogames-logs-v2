@@ -44,11 +44,11 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
     <div className="h-full flex flex-col overflow-y-auto bg-primary border-r border-white border-opacity-[0.05] w-full">
       <div className=" text-white flex flex-col h-full w-full">
         <div
-          className="h-[60px] border-b border-white border-opacity-[0.05] w-full flex items-center md:justify-between
+          className="h-[50px] border-b border-white border-opacity-[0.05] w-full flex items-center md:justify-between
         px-4 md:gap-x-0 gap-x-2"
         >
           <h2 className="text-lg font-medium">Oldogames Logs</h2>
-          <Image width={30} height={30} src="/logo.png" alt="logo image" />
+          <Image width={30} height={30} src="/logo.png" alt="logo image" className="w-auto h-auto"/>
         </div>
         <div className="px-4 space-y-4 mt-4">
           <div className="flex items-center justify-between">
@@ -101,7 +101,7 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
           </div>
         </div>
         <div
-          className="h-[60px] border-t border-white border-opacity-[0.05] w-full flex items-center justify-between
+          className="h-[50px] border-t border-white border-opacity-[0.05] w-full flex items-center justify-between
         px-4 absolute bottom-0"
         >
           <p className="font-medium text-lg">qurs</p>

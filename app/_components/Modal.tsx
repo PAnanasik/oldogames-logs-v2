@@ -21,7 +21,7 @@ const Modal = ({ currentLogs }: ModalProps) => {
   return (
     <div
       className={cn(
-        `fixed md:right-[10px] md:left-auto left-0 right-0 mx-auto top-[75px] md:w-[470px] 
+        `fixed md:right-[10px] md:left-auto left-0 right-0 mx-auto top-[60px] md:w-[470px] 
       w-[98%] min-h-[300px] rounded-md bg-primary
     border border-white border-opacity-[0.05]`,
         expanded && "md:w-[800px] min-h-[400px]"

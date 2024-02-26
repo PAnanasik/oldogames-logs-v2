@@ -1,11 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Box } from "lucide-react";
+import { Box, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
-import LogItem from "./LogItem";
-import BoxPanel from "./BoxPanel";
 import Modal from "./Modal";
 
 const NavbarRoutes = () => {
@@ -26,16 +24,14 @@ const NavbarRoutes = () => {
       ? JSON.parse(localStorage.getItem("logs") || "[]")
       : [];
 
-  console.log(
-    currentLogs.map((log: { formattedDateLogs: string; text: string }) =>
-      console.log(log)
-    )
-  );
-
   return (
     <nav className="w-full h-full text-white bg-primary flex items-center justify-between gap-x-4">
       <div className="md:pl-96 w-full">
         <SearchInput />
+      </div>
+      <div className="cursor-pointer hover:bg-secondary/15 rounded-full ease duration-300 flex items-center w-auto">
+        <Shield className={cn("h-9 w-9 p-2", showModal && "text-link")} />
+        <p className="text-secondary sr-only">Режим админа</p>
       </div>
       <div
         className="cursor-pointer hover:bg-secondary/15 rounded-full ease duration-300"
