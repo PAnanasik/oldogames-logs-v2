@@ -5,7 +5,7 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import qs from "query-string";
 import { cn } from "@/lib/utils";
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useMemo } from "react";
 
 type GamemodeItemProps = {
   id: string;
@@ -18,27 +18,21 @@ const GamemodeItem = ({ id, name }: GamemodeItemProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [currentGamemodeId, setCurrentGamemodeId] = useLocalStorage(
-    "gamemodeId",
-    String(searchParams?.get("gamemodeId"))
-  );
-  const [currentCategoryId] = useLocalStorage("categoryId", "");
+  const currentGamemodeId = searchParams?.get("gamemodeId");
+  const currentCategoryId = searchParams?.get("categoryId");
   const currentText = searchParams?.get("text");
   const currentPage = searchParams?.get("page");
 
   const isSelected = currentGamemodeId === id;
 
   const onClick = () => {
-    setCurrentGamemodeId(isSelected ? "" : id);
-    const updatedGamemodeId = isSelected ? "" : id;
-
     const url = qs.stringifyUrl(
       {
         url: pathname || "",
         query: {
-          gamemodeId: updatedGamemodeId,
           text: currentText,
-          categoryId: String(currentCategoryId),
+          gamemodeId: isSelected ? null : id,
+          categoryId: currentCategoryId,
           page: currentPage,
         },
       },
