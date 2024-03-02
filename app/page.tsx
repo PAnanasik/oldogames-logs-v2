@@ -16,7 +16,7 @@ type SearchPageProps = {
 
 export default async function Home({ searchParams }: SearchPageProps) {
   const page = searchParams["page"] ?? "1";
-  const limit = searchParams["limit"] ?? "3";
+  const limit = searchParams["limit"] ?? "100";
 
   const { logs, metadata } = await getLogs({
     query: searchParams,
