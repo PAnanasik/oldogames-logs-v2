@@ -10,8 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Category, Gamemode } from "@prisma/client";
 import { Shield } from "lucide-react";
@@ -28,35 +26,23 @@ const ModalAdmin = ({ categories, gamemodes }: ModalAdminProps) => {
       <DialogTrigger>
         <Shield className={cn("h-9 w-9 p-2")} />
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="min-w-[90%]">
         <DialogHeader>
-          <DialogTitle>Режим администратора</DialogTitle>
+          <DialogTitle className="flex gap-x-2 items-center">
+            <Shield className="h-10 w-10 bg-link/20 p-2 rounded-full" />
+            Режим администратора
+          </DialogTitle>
           <DialogDescription>
             Здесь вы можете добавлять новые категории и фильтры
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              value="Pedro Duarte"
-              className="col-span-3 bg-background text-white"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              value="@peduarte"
-              className="col-span-3 bg-background text-white"
-            />
-          </div>
-          <PopoverDemo categories={categories} gamemodes={gamemodes} />
+          <PopoverDemo categories={categories} gamemodes={gamemodes} flag />
+          <PopoverDemo
+            categories={categories}
+            gamemodes={gamemodes}
+            flag={false}
+          />
         </div>
         <DialogFooter>
           <Button type="submit" className="text-white">

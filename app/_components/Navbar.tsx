@@ -14,7 +14,7 @@ const Navbar = ({ categories, gamemodes }: NavbarProps) => {
       bg-primary shadow-sm transition-all duration-300 fixed top-0 w-full"
     >
       <MobileSidebar categories={categories} gamemodes={gamemodes} />
-      <NavbarRoutes />
+      <NavbarRoutes categories={categories} gamemodes={gamemodes} />
     </div>
   );
 };
