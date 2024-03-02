@@ -4,7 +4,7 @@ import { useDebounce } from "@/app/hooks/useDebounce";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import queryString from "query-string";
+import qs from "query-string";
 import { useEffect, useState } from "react";
 
 const SearchInput = () => {
@@ -17,21 +17,30 @@ const SearchInput = () => {
 
   const currentCategoryId = searchParams?.get("categoryId");
   const currentGamemodeId = searchParams?.get("gamemodeId");
+  const currentPage = searchParams?.get("page");
 
   useEffect(() => {
-    const url = queryString.stringifyUrl(
+    const url = qs.stringifyUrl(
       {
         url: pathname || "",
         query: {
           categoryId: currentCategoryId,
           gamemodeId: currentGamemodeId,
           text: debouncedValue,
+          page: currentPage,
         },
       },
       { skipNull: true, skipEmptyString: true }
     );
     router.push(url);
-  }, [debouncedValue, currentCategoryId, router, pathname, currentGamemodeId]);
+  }, [
+    debouncedValue,
+    currentCategoryId,
+    router,
+    pathname,
+    currentGamemodeId,
+    currentPage,
+  ]);
 
   return (
     <div className="relative">

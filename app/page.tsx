@@ -3,32 +3,29 @@ import Navbar from "./_components/Navbar";
 import Logs from "./_components/Logs";
 import prisma from "@/app/libs/prismadb";
 import { Toaster } from "sonner";
+import { getLogs } from "./actions/getLogs";
 
 type SearchPageProps = {
   searchParams: {
     text: string;
     categoryId: string;
     gamemodeId: string;
+    [key: string]: string | string[] | undefined;
   };
 };
 
 export default async function Home({ searchParams }: SearchPageProps) {
-  const logs = await prisma.log.findMany({
-    where: {
-      text: {
-        contains: searchParams.text,
-      },
-      categoryId: searchParams.categoryId,
-      gamemodeId: searchParams.gamemodeId,
-    },
-    include: {
-      Category: true,
-      Gamemode: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
+  const page = searchParams["page"] ?? "1";
+  const limit = searchParams["limit"] ?? "3";
+
+  const { logs, metadata } = await getLogs({
+    query: searchParams,
+    page: Number(page),
+    limit: Number(limit),
   });
+
+  console.log(logs);
+
   const gamemodes = await prisma.gamemode.findMany();
   const categories = await prisma.category.findMany();
 
@@ -45,7 +42,7 @@ export default async function Home({ searchParams }: SearchPageProps) {
         <div className="hidden md:flex h-full w-96 flex-col fixed inset-y-0 z-50">
           <Sidebar categories={categories} gamemodes={gamemodes} />
         </div>
-        <Logs logs={logs} />
+        <Logs logs={logs} page={Number(page)} {...metadata} />
       </main>
       <Toaster
         toastOptions={{

@@ -82,7 +82,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--background));
+  background: hsl(var(--primary));
 }
 
 ::-webkit-scrollbar-thumb {

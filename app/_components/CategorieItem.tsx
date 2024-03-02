@@ -19,6 +19,7 @@ const CategorieItem = ({ id, name }: CategorieItemProps) => {
   const currentCategoryId = searchParams?.get("categoryId");
   const currentGamemodeId = searchParams?.get("gamemodeId");
   const currentText = searchParams?.get("text");
+  const currentPage = searchParams?.get("page");
 
   const isSelected = currentCategoryId === id;
 
@@ -30,6 +31,7 @@ const CategorieItem = ({ id, name }: CategorieItemProps) => {
           text: currentText,
           gamemodeId: currentGamemodeId,
           categoryId: isSelected ? null : id,
+          page: currentPage,
         },
       },
       { skipNull: true, skipEmptyString: true }
