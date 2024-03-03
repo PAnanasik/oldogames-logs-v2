@@ -1,25 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Edit, Pencil, Save } from "lucide-react";
-import { useState } from "react";
+import { Delete } from "lucide-react";
 
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { deleteCategory, deleteGamemode } from "@/actions/actions";
+import { toast } from "sonner";
 
 type ModalAdminItem = {
   name: string;
   id: string;
+  flag: boolean;
 };
 
 const formSchema = z.object({
@@ -31,15 +27,31 @@ const formSchema = z.object({
     .max(70),
 });
 
-const ModalAdminItem = ({ name, id }: ModalAdminItem) => {
-  const [isEditing, setIsEditing] = useState(false);
-
+const ModalAdminItem = ({ name, id, flag }: ModalAdminItem) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { name },
   });
 
   const { isSubmitting, isValid } = form.formState;
+
+  async function handleDeleteCategory() {
+    const response = await deleteCategory(id);
+    if (response && "error" in response && response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success("Категория удалена");
+    }
+  }
+
+  async function handleDeleteGamemode() {
+    const response = await deleteGamemode(id);
+    if (response && "error" in response && response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success("Режим удален");
+    }
+  }
 
   return (
     <Form {...form}>
@@ -53,32 +65,26 @@ const ModalAdminItem = ({ name, id }: ModalAdminItem) => {
                 <div key={id} className="flex flex-col gap-y-2">
                   <Label htmlFor="width" className="truncate flex gap-x-1">
                     {name}
-                    {isEditing && (
-                      <FormMessage className="text-secondary text-xs text-opacity-[0.7] italic lowercase">
-                        Максимум 70 символов
-                      </FormMessage>
-                    )}
                   </Label>
                   <div className="flex gap-x-1 items-center">
                     <Input
-                      id="width"
                       defaultValue={name}
+                      id="width"
                       className="col-span-2 w-full h-8 bg-primary text-white"
-                      disabled={!isEditing}
+                      disabled
+                      {...field}
                     />
                     <div className="flex h-full items-center gap-x-1">
                       <Button
-                        className="h-full bg-primary"
-                        onClick={() => setIsEditing(!isEditing)}
+                        className="h-full bg-primary text-secondary"
+                        onClick={
+                          flag ? handleDeleteGamemode : handleDeleteCategory
+                        }
+                        disabled={isSubmitting && isValid}
                         type="button"
                       >
-                        <Edit className="h-4 w-4" />
+                        <Delete className="h-4 w-4" />
                       </Button>
-                      {isEditing && (
-                        <Button className="h-full">
-                          <Save className="h-4 w-4" />
-                        </Button>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -88,26 +94,6 @@ const ModalAdminItem = ({ name, id }: ModalAdminItem) => {
         />
       </form>
     </Form>
-    // <div key={id} className="flex flex-col gap-y-2">
-    //   <Label htmlFor="width" className="truncate">
-    //     {name}
-    //   </Label>
-    //   <div className="flex gap-x-1 items-center">
-    //     <Input
-    //       id="width"
-    //       defaultValue={name}
-    //       className="col-span-2 w-full h-8 bg-primary text-white"
-    //       disabled={!isEditing}
-    //     />
-    //     <Button
-    //       className="h-full bg-primary"
-    //       onClick={() => setIsEditing(!isEditing)}
-    //     >
-    //       <Edit className="h-4 w-4" />
-    //     </Button>
-    //     {isEditing && <Button className="h-full bg-primary">Сохранить</Button>}
-    //   </div>
-    // </div>
   );
 };
 

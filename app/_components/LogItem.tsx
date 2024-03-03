@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import { Copy, MinusCircle, Plus, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import parseEventDescription from "../functions/playerData";
+import HoverCardUser from "./HoverCardUser";
 
 type LogItemProps = {
   text: string;
@@ -29,6 +31,10 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
       minute: "2-digit",
       second: "2-digit",
     });
+
+  const eventData = parseEventDescription(text);
+
+  console.log(eventData);
 
   const copyTextToClipboard = async ({
     formattedDateLogs,
@@ -109,13 +115,29 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
       )}
     >
       <div className="flex items-center justify-between w-full">
-        <div>
+        <div className="flex items-center">
           <span className="text-secondary mr-1 md:text-md text-sm">
             {formattedDate}
           </span>{" "}
-          <span className="text-link font-semibold md:text-md text-sm">
-            {text}
-          </span>
+          <div className="flex items-center gap-x-1">
+            {eventData.players.length > 0 ? (
+              <HoverCardUser
+                user={eventData.players[0]}
+                formattedDate={new Date(date).toLocaleString()}
+              />
+            ) : undefined}
+            <span className="text-secondary text-white  md:text-md text-sm">
+              {eventData.action}
+            </span>
+            {eventData.players.length > 1 ? (
+              eventData.players.length > 1 ? (
+                <HoverCardUser
+                  user={eventData.players[1]}
+                  formattedDate={new Date(date).toLocaleString()}
+                />
+              ) : undefined
+            ) : undefined}
+          </div>
         </div>
         {!logExists && !copy && (
           <button

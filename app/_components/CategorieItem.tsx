@@ -1,9 +1,9 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import "react-tooltip/dist/react-tooltip.css";
-import qs from "query-string";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 type CategorieItemProps = {
   id: string;
@@ -11,38 +11,25 @@ type CategorieItemProps = {
 };
 
 const CategorieItem = ({ id, name }: CategorieItemProps) => {
-  const pathname = usePathname();
-
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const currentCategoryId = searchParams?.get("categoryId");
-  const currentGamemodeId = searchParams?.get("gamemodeId");
-  const currentText = searchParams?.get("text");
-  const currentPage = searchParams?.get("page");
 
   const isSelected = currentCategoryId === id;
 
-  const onClick = () => {
-    const url = qs.stringifyUrl(
-      {
-        url: pathname || "",
-        query: {
-          text: currentText,
-          gamemodeId: currentGamemodeId,
-          categoryId: isSelected ? null : id,
-          page: currentPage,
-        },
-      },
-      { skipNull: true, skipEmptyString: true }
-    );
+  const handleCopy = async (id: string) => {
+    try {
+      await navigator.clipboard.writeText(`${id}`);
 
-    router.push(url);
+      toast.success("ID категории скопирован в буфер обмена");
+    } catch (error) {
+      toast.error("Не удалось скопировать ID");
+    }
   };
 
   return (
     <button
-      onClick={onClick}
+      onClick={() => handleCopy(id)}
       className={cn(
         "py-2 px-3 text-sm border border-white border-opacity-[0.1] rounded-full flex items-center gap-x-1 hover:bg-link/10 transition hover:text-link",
         isSelected && "border-link bg-link/10 text-link font-medium"

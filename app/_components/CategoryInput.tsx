@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { useEffect, useState } from "react";
 
-const SearchInput = () => {
+const CategoryInput = () => {
   const [value, setValue] = useState("");
   const debouncedValue = useDebounce(value);
 
@@ -15,8 +15,8 @@ const SearchInput = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const currentCategoryId = searchParams?.get("categoryId");
   const currentGamemodeId = searchParams?.get("gamemodeId");
+  const currentText = searchParams?.get("text");
   const currentPage = searchParams?.get("page");
 
   useEffect(() => {
@@ -24,9 +24,9 @@ const SearchInput = () => {
       {
         url: pathname || "",
         query: {
-          categoryId: currentCategoryId,
+          categoryId: debouncedValue,
           gamemodeId: currentGamemodeId,
-          text: debouncedValue,
+          text: currentText,
           page: currentPage,
         },
       },
@@ -35,10 +35,10 @@ const SearchInput = () => {
     router.push(url);
   }, [
     debouncedValue,
-    currentCategoryId,
+    currentGamemodeId,
     router,
     pathname,
-    currentGamemodeId,
+    currentText,
     currentPage,
   ]);
 
@@ -48,11 +48,11 @@ const SearchInput = () => {
       <Input
         value={value}
         onChange={(e) => setValue(e.currentTarget.value)}
-        className="md:w-[300px] w-full pl-9 rounded-md bg-background"
-        placeholder="Поиск по тексту.."
+        className="w-full pl-9 rounded-md bg-background"
+        placeholder="Поиск по категориям.."
       />
     </div>
   );
 };
 
-export default SearchInput;
+export default CategoryInput;

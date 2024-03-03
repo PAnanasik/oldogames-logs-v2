@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Category, Gamemode } from "@prisma/client";
 import { Shield } from "lucide-react";
-import { PopoverDemo } from "./Popover";
+import PopoverCard from "./PopoverCard";
 
 type ModalAdminProps = {
   categories: Category[];
@@ -37,12 +37,8 @@ const ModalAdmin = ({ categories, gamemodes }: ModalAdminProps) => {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <PopoverDemo categories={categories} gamemodes={gamemodes} flag />
-          <PopoverDemo
-            categories={categories}
-            gamemodes={gamemodes}
-            flag={false}
-          />
+          <PopoverCard gamemodes={gamemodes} flag />
+          <PopoverCard categories={categories} flag={false} />
         </div>
         <DialogFooter>
           <Button type="submit" className="text-white">

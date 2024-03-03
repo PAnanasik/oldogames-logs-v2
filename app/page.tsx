@@ -16,15 +16,13 @@ type SearchPageProps = {
 
 export default async function Home({ searchParams }: SearchPageProps) {
   const page = searchParams["page"] ?? "1";
-  const limit = searchParams["limit"] ?? "100";
+  const limit = searchParams["limit"] ?? "200";
 
   const { logs, metadata } = await getLogs({
     query: searchParams,
     page: Number(page),
     limit: Number(limit),
   });
-
-  console.log(logs);
 
   const gamemodes = await prisma.gamemode.findMany();
   const categories = await prisma.category.findMany();
