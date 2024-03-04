@@ -1,12 +1,20 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Copy, MinusCircle, Plus, PlusCircle } from "lucide-react";
+import { Calendar, Copy, MinusCircle, Plus, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import parseEventDescription from "../functions/playerData";
 import PopoverCard from "./PopoverCardUser";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import CalendarLog from "./CalendarLog";
 
 type LogItemProps = {
   text: string;
@@ -16,6 +24,8 @@ type LogItemProps = {
 };
 
 const LogItem = ({ text, copy, date, id }: LogItemProps) => {
+  const [calendar, setShowCalendar] = useState(false);
+
   const formattedDate =
     date.toLocaleString("en-US", { month: "short", day: "numeric" }) +
     ", " +
@@ -58,13 +68,19 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
         ? JSON.parse(localStorage.getItem("logs") || "[]")
         : [];
     const logExists = currentLogs.some(
-      (log: { formattedDateLogs: string; text: string; id: number }) =>
+      (log: {
+        formattedDateLogs: string;
+        text: string;
+        id: number;
+        date: Date;
+      }) =>
         log.formattedDateLogs === formattedDateLogs &&
         log.text === text &&
-        log.id === id
+        log.id === id &&
+        log.date === date
     );
     if (!logExists) {
-      currentLogs.push({ formattedDateLogs, text, id });
+      currentLogs.push({ formattedDateLogs, text, id, date });
       localStorage.setItem("logs", JSON.stringify(currentLogs));
       setLogExists(true);
       toast.success("Лог успешно добавлен");
@@ -77,11 +93,17 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
         ? JSON.parse(localStorage.getItem("logs") || "[]")
         : [];
     const updatedLogs = currentLogs.filter(
-      (log: { formattedDateLogs: string; text: string; id: number }) =>
+      (log: {
+        formattedDateLogs: string;
+        text: string;
+        id: number;
+        date: Date;
+      }) =>
         !(
           log.formattedDateLogs === formattedDateLogs &&
           log.text === text &&
-          log.id === id
+          log.id === id &&
+          log.date === date
         )
     );
     localStorage.setItem("logs", JSON.stringify(updatedLogs));
@@ -105,66 +127,88 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
     setLogExists(exists);
   }, [formattedDateLogs, text, id]);
 
+  function handleClick(e: any) {
+    e.preventDefault();
+    setShowCalendar(!calendar);
+  }
+
   return (
-    <ScrollArea
-      className={cn(
-        `w-full min-h-[55px] border-t border-white border-opacity-[0.09] 
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <ScrollArea
+          className={cn(
+            `w-full min-h-[55px] border-t border-white border-opacity-[0.09] 
       text-white flex items-center py-2 px-4 text-lg whitespace-nowrap`,
-        logExists && !copy && "bg-link/10"
-      )}
-    >
-      <div className="flex items-center justify-between w-full">
-        <div className="flex items-center">
-          <span className="text-secondary mr-1 md:text-md text-sm">
-            {formattedDate}
-          </span>
-          <div className="flex items-center gap-x-1">
-            {eventData.players.length > 0 ? (
-              <PopoverCard
-                user={eventData.players[0]}
-                formattedDate={new Date(date).toLocaleString()}
-              />
-            ) : undefined}
-            <span className="text-secondary text-white md:text-md text-sm ">
-              {eventData.action}
-            </span>
-            {eventData.players.length > 1 ? (
-              eventData.players.length > 1 ? (
-                <PopoverCard
-                  user={eventData.players[1]}
-                  formattedDate={new Date(date).toLocaleString()}
-                />
-              ) : undefined
-            ) : undefined}
+            logExists && !copy && "bg-link/10"
+          )}
+        >
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <span className="text-secondary mr-1 md:text-md text-sm">
+                {formattedDate}
+              </span>
+              <div className="flex items-center gap-x-1">
+                {eventData.players.length > 0 ? (
+                  <PopoverCard
+                    user={eventData.players[0]}
+                    formattedDate={new Date(date).toLocaleString()}
+                  />
+                ) : undefined}
+                <span className="text-secondary text-white md:text-md text-sm ">
+                  {eventData.action}
+                </span>
+                {eventData.players.length > 1 ? (
+                  eventData.players.length > 1 ? (
+                    <PopoverCard
+                      user={eventData.players[1]}
+                      formattedDate={new Date(date).toLocaleString()}
+                    />
+                  ) : undefined
+                ) : undefined}
+              </div>
+            </div>
+            {!logExists && !copy && (
+              <button
+                onClick={handleAddToLocalStorage}
+                className="hover:bg-secondary/15 rounded-full ease duration-300"
+              >
+                <PlusCircle className="w-8 h-8 p-2 text-link" />
+              </button>
+            )}
+            {logExists && !copy && (
+              <button
+                onClick={handleRemoveFromLocalStorage}
+                className="hover:bg-secondary/15 rounded-full ease duration-300"
+              >
+                <MinusCircle className="w-8 h-8 p-2 text-link" />
+              </button>
+            )}
+            {logExists && copy && (
+              <button
+                className="hover:bg-secondary/15 rounded-full ease duration-300"
+                onClick={() => copyTextToClipboard({ formattedDateLogs, text })}
+              >
+                <Copy className="w-8 h-8 p-2 text-link" />
+              </button>
+            )}
           </div>
-        </div>
-        {!logExists && !copy && (
-          <button
-            onClick={handleAddToLocalStorage}
-            className="hover:bg-secondary/15 rounded-full ease duration-300"
-          >
-            <PlusCircle className="w-8 h-8 p-2 text-link" />
-          </button>
-        )}
-        {logExists && !copy && (
-          <button
-            onClick={handleRemoveFromLocalStorage}
-            className="hover:bg-secondary/15 rounded-full ease duration-300"
-          >
-            <MinusCircle className="w-8 h-8 p-2 text-link" />
-          </button>
-        )}
-        {logExists && copy && (
-          <button
-            className="hover:bg-secondary/15 rounded-full ease duration-300"
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+        <ContextMenuContent className="w-72">
+          <ContextMenuItem
             onClick={() => copyTextToClipboard({ formattedDateLogs, text })}
           >
-            <Copy className="w-8 h-8 p-2 text-link" />
-          </button>
-        )}
-      </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+            <Copy className="w-4 h-4 mr-2" />
+            Скопировать
+          </ContextMenuItem>
+          <ContextMenuItem onClick={(e) => handleClick(e)}>
+            <Calendar className="w-4 h-4 mr-2" />
+            Посмотреть в календаре
+          </ContextMenuItem>
+          {calendar && <CalendarLog date={date} />}
+        </ContextMenuContent>
+      </ContextMenuTrigger>
+    </ContextMenu>
   );
 };
 

@@ -6,11 +6,17 @@ import { cn } from "@/lib/utils";
 import BoxPanel from "./BoxPanel";
 
 type ModalProps = {
-  currentLogs: Array<{ formattedDateLogs: string; text: string; id: number }>;
+  currentLogs: Array<{
+    formattedDateLogs: string;
+    text: string;
+    id: number;
+    date: Date;
+  }>;
 };
 
 type Log = {
   formattedDateLogs: string;
+  date: Date;
   text: string;
   id: number;
 };
@@ -40,7 +46,7 @@ const Modal = ({ currentLogs }: ModalProps) => {
             key={index}
             id={log.id}
             text={log.text}
-            date={new Date(log.formattedDateLogs)}
+            date={new Date(log.date)}
             copy
           />
         ))}

@@ -59,7 +59,7 @@ const BoxPanel = ({
   const shrinkTooltip = `Уменьшить размер хранилища`;
 
   return (
-    <div className="bg-background w-full h-[50px] absolute bottom-0 rounded-b-md">
+    <div className="bg-background w-full h-[50px] absolute bottom-0 rounded-b-md z-30 opacity-100">
       <div className="flex items-center justify-around px-4 h-full w-full">
         <button
           className="hover:bg-secondary/15 rounded-full ease duration-300"

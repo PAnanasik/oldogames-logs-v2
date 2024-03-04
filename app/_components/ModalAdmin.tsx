@@ -41,9 +41,7 @@ const ModalAdmin = ({ categories, gamemodes }: ModalAdminProps) => {
           <PopoverCard categories={categories} flag={false} />
         </div>
         <DialogFooter>
-          <Button type="submit" className="text-white">
-            Сохранить
-          </Button>
+          <p className="text-secondary">made by PAnanasik, 2024</p>
         </DialogFooter>
       </DialogContent>
     </Dialog>
