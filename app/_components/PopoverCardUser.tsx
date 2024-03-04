@@ -89,7 +89,11 @@ const PopoverCard = ({ user, formattedDate }: PopoverCardProps) => {
               {user.name}
             </h4>
             <p className="text-sm break-all overflow-y-auto max-h-[40px] text-white">
-              {JSON.stringify(user.variables)}
+              {Object.entries(user.variables).map(([key, value]) => (
+                <div key={key}>
+                  {key} - {value as string}
+                </div>
+              ))}
             </p>
             <div className="flex items-center pt-2">
               <CalendarDays className="mr-2 h-4 w-4 text-secondary" />{" "}
