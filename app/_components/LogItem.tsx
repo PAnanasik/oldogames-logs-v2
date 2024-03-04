@@ -5,7 +5,8 @@ import { Copy, MinusCircle, Plus, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import parseEventDescription from "../functions/playerData";
-import HoverCardUser from "./HoverCardUser";
+import PopoverCard from "./PopoverCardUser";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 type LogItemProps = {
   text: string;
@@ -33,8 +34,6 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
     });
 
   const eventData = parseEventDescription(text);
-
-  console.log(eventData);
 
   const copyTextToClipboard = async ({
     formattedDateLogs,
@@ -107,10 +106,10 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
   }, [formattedDateLogs, text, id]);
 
   return (
-    <div
+    <ScrollArea
       className={cn(
-        `w-full h-[55px] border-t border-white border-opacity-[0.09] 
-      text-white flex items-center py-2 px-4 text-lg`,
+        `w-full min-h-[55px] border-t border-white border-opacity-[0.09] 
+      text-white flex items-center py-2 px-4 text-lg whitespace-nowrap`,
         logExists && !copy && "bg-link/10"
       )}
     >
@@ -118,20 +117,20 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
         <div className="flex items-center">
           <span className="text-secondary mr-1 md:text-md text-sm">
             {formattedDate}
-          </span>{" "}
+          </span>
           <div className="flex items-center gap-x-1">
             {eventData.players.length > 0 ? (
-              <HoverCardUser
+              <PopoverCard
                 user={eventData.players[0]}
                 formattedDate={new Date(date).toLocaleString()}
               />
             ) : undefined}
-            <span className="text-secondary text-white  md:text-md text-sm">
+            <span className="text-secondary text-white md:text-md text-sm ">
               {eventData.action}
             </span>
             {eventData.players.length > 1 ? (
               eventData.players.length > 1 ? (
-                <HoverCardUser
+                <PopoverCard
                   user={eventData.players[1]}
                   formattedDate={new Date(date).toLocaleString()}
                 />
@@ -164,7 +163,8 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
           </button>
         )}
       </div>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 };
 

@@ -16,7 +16,7 @@ type SearchPageProps = {
 
 export default async function Home({ searchParams }: SearchPageProps) {
   const page = searchParams["page"] ?? "1";
-  const limit = searchParams["limit"] ?? "200";
+  const limit = searchParams["limit"] ?? "100";
 
   const { logs, metadata } = await getLogs({
     query: searchParams,
@@ -50,7 +50,7 @@ export default async function Home({ searchParams }: SearchPageProps) {
             color: "hsl(var(--link))",
           },
         }}
-        duration={1000}
+        duration={3000}
         visibleToasts={3}
       />
     </>

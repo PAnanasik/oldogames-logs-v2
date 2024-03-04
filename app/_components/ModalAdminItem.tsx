@@ -21,7 +21,7 @@ type ModalAdminItem = {
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, {
+    .min(3, {
       message: "Название обязательно",
     })
     .max(70),
@@ -72,7 +72,6 @@ const ModalAdminItem = ({ name, id, flag }: ModalAdminItem) => {
                       id="width"
                       className="col-span-2 w-full h-8 bg-primary text-white"
                       disabled
-                      {...field}
                     />
                     <div className="flex h-full items-center gap-x-1">
                       <Button
