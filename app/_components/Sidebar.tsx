@@ -138,8 +138,8 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
           className="h-[50px] border-t border-white border-opacity-[0.05] w-full flex items-center justify-between
         px-4 absolute bottom-0"
         >
-          <p className="font-medium text-lg">qurs</p>
-          <div className="h-[40px] w-[40px] rounded-full bg-white"></div>
+          <p className="font-medium text-lg">PAnanasik</p>
+          <div className="h-[40px] w-[40px] rounded-full bg-background"></div>
         </div>
       </div>
     </div>

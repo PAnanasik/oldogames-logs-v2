@@ -79,6 +79,7 @@
 
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -92,4 +93,15 @@
 
 .action-player {
   color: green;
+}
+
+.triangle-gradient {
+  background: rgb(56, 199, 104);
+  background: linear-gradient(
+    159deg,
+    rgba(56, 199, 104, 1) 0%,
+    rgba(46, 135, 77, 1) 19%,
+    rgba(30, 30, 33, 1) 49%,
+    rgba(39, 39, 42, 1) 100%
+  );
 }
