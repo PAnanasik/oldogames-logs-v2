@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Category, Gamemode } from "@prisma/client";
 import { Shield } from "lucide-react";
 import PopoverCard from "./PopoverCard";
+import ClientOnly from "./ClientOnly";
 
 type ModalAdminProps = {
   categories: Category[];
@@ -37,8 +38,10 @@ const ModalAdmin = ({ categories, gamemodes }: ModalAdminProps) => {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <PopoverCard gamemodes={gamemodes} flag />
-          <PopoverCard categories={categories} flag={false} />
+          <ClientOnly>
+            <PopoverCard gamemodes={gamemodes} flag />
+            <PopoverCard categories={categories} flag={false} />
+          </ClientOnly>
         </div>
         <DialogFooter>
           <p className="text-secondary">made by PAnanasik, 2024</p>

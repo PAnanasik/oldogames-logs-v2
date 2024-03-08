@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { LogItem } from "./LogItem";
+import ClientOnly from "./ClientOnly";
 
 type LogsProps = {
   logs: Log[];
@@ -24,67 +25,71 @@ const Logs = ({ logs, page, hasNextPage, totalPages }: LogsProps) => {
 
   return (
     <div className="md:pl-96 [&>*:last-child]:border-b-transparent [&>*:first-child]:border-t-transparent pb-[50px]">
-      {logs.map((log) => (
-        <LogItem
-          key={log.id}
-          id={log.id}
-          text={log.text}
-          date={log.createdAt}
-          copy={false}
-        />
-      ))}
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationLink
-              href={`?page=1`}
-              className={cn(page === 1 && "pointer-events-none opacity-50")}
-            >
-              <ChevronsLeft className="h-4 w-4" />
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationPrevious
-              href={`?page=${page - 1}`}
-              className={cn(page === 1 && "pointer-events-none opacity-50")}
-            />
-          </PaginationItem>
-          {Array.from({ length: Math.min(totalPages, 4) }).map((_, index) => {
-            const displayedPage = Math.min(
-              totalPages - Math.max(3, totalPages - page + 1) + index,
-              totalPages
-            );
-            if (displayedPage <= 0) return null;
-            return (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  href={`?page=${displayedPage}`}
-                  isActive={isActive(displayedPage)}
-                  className={cn(
-                    isActive(displayedPage) && "bg-link/10 text-link"
-                  )}
-                >
-                  {displayedPage}
-                </PaginationLink>
-              </PaginationItem>
-            );
-          })}
-          <PaginationItem>
-            <PaginationNext
-              href={`?page=${page + 1}`}
-              className={cn(!hasNextPage && "pointer-events-none opacity-50")}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              href={`?page=${totalPages}`}
-              className={cn(!hasNextPage && "pointer-events-none opacity-50")}
-            >
-              <ChevronsRight className="h-4 w-4" />
-            </PaginationLink>
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <ClientOnly>
+        {logs.map((log) => (
+          <LogItem
+            key={log.id}
+            id={log.id}
+            text={log.text}
+            date={log.createdAt}
+            copy={false}
+          />
+        ))}
+      </ClientOnly>
+      <ClientOnly>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationLink
+                href={`?page=1`}
+                className={cn(page === 1 && "pointer-events-none opacity-50")}
+              >
+                <ChevronsLeft className="h-4 w-4" />
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationPrevious
+                href={`?page=${page - 1}`}
+                className={cn(page === 1 && "pointer-events-none opacity-50")}
+              />
+            </PaginationItem>
+            {Array.from({ length: Math.min(totalPages, 4) }).map((_, index) => {
+              const displayedPage = Math.min(
+                totalPages - Math.max(3, totalPages - page + 1) + index,
+                totalPages
+              );
+              if (displayedPage <= 0) return null;
+              return (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    href={`?page=${displayedPage}`}
+                    isActive={isActive(displayedPage)}
+                    className={cn(
+                      isActive(displayedPage) && "bg-link/10 text-link"
+                    )}
+                  >
+                    {displayedPage}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
+            <PaginationItem>
+              <PaginationNext
+                href={`?page=${page + 1}`}
+                className={cn(!hasNextPage && "pointer-events-none opacity-50")}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                href={`?page=${totalPages}`}
+                className={cn(!hasNextPage && "pointer-events-none opacity-50")}
+              >
+                <ChevronsRight className="h-4 w-4" />
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </ClientOnly>
 
       {logs.length === 0 && (
         <div className="w-full h-full absolute inset-0 md:pl-96 flex justify-center items-center flex-col space-y-4 z-[-1]">

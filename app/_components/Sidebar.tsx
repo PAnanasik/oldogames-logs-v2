@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { Tooltip } from "react-tooltip";
 import GamemodeInput from "./GamemodeInput";
 import CategoryInput from "./CategoryInput";
+import ClientOnly from "./ClientOnly";
 
 type SidebarProps = {
   categories: Category[];
@@ -41,6 +42,10 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
       return newLayout;
     });
   };
+
+  if (!categories || !gamemodes) {
+    return <div className="w-[500px] h-[500px] bg-white"></div>;
+  }
 
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-primary border-r border-white border-opacity-[0.05] w-full">
@@ -88,13 +93,15 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
                 layout === "list" && "flex flex-col"
               )}
             >
-              {gamemodes?.map((gamemode) => (
-                <GamemodeItem
-                  key={gamemode.id}
-                  id={gamemode.id}
-                  name={gamemode.name}
-                />
-              ))}
+              <ClientOnly>
+                {gamemodes?.map((gamemode) => (
+                  <GamemodeItem
+                    key={gamemode.id}
+                    id={gamemode.id}
+                    name={gamemode.name}
+                  />
+                ))}
+              </ClientOnly>
             </div>
 
             <div className="flex gap-x-2 p-2 border border-white border-opacity-[0.1] rounded-md">
@@ -125,13 +132,15 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
           </div>
           <CategoryInput />
           <div className="flex items-center gap-2 pb-2 flex-wrap max-h-[300px] overflow-y-auto">
-            {categories?.map((category) => (
-              <CategorieItem
-                key={category.id}
-                id={category.id}
-                name={category.name}
-              />
-            ))}
+            <ClientOnly>
+              {categories?.map((category) => (
+                <CategorieItem
+                  key={category.id}
+                  id={category.id}
+                  name={category.name}
+                />
+              ))}
+            </ClientOnly>
           </div>
         </div>
         <div
