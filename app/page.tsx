@@ -1,9 +1,14 @@
 import Sidebar from "./_components/Sidebar";
 import Navbar from "./_components/Navbar";
 import Logs from "./_components/Logs";
+
 import prisma from "@/app/libs/prismadb";
 import { Toaster } from "sonner";
 import { getLogs } from "./actions/getLogs";
+import ClientOnly from "./_components/ClientOnly";
+import { LogItem } from "./_components/LogItem";
+import { Suspense } from "react";
+import LogsSkeleton from "./_components/LogsSkeleton";
 
 type SearchPageProps = {
   searchParams: {
@@ -35,12 +40,24 @@ export default async function Home({ searchParams }: SearchPageProps) {
     <>
       <main className="h-full">
         <div className="h-[50px]">
+          {/* <ClientOnly> */}
+
           <Navbar categories={categories} gamemodes={gamemodes} />
+
+          {/* </ClientOnly> */}
         </div>
         <div className="hidden md:flex h-full w-96 flex-col fixed inset-y-0 z-50">
+          {/* <ClientOnly> */}
+
           <Sidebar categories={categories} gamemodes={gamemodes} />
+
+          {/* </ClientOnly> */}
         </div>
+        {/* <ClientOnly> */}
+
         <Logs logs={logs} page={Number(page)} {...metadata} />
+
+        {/* </ClientOnly> */}
       </main>
       <Toaster
         toastOptions={{

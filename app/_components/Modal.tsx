@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import LogItem from "./LogItem";
+
 import { cn } from "@/lib/utils";
 import BoxPanel from "./BoxPanel";
+import { LogItem } from "./LogItem";
 
 type ModalProps = {
   currentLogs: Array<{

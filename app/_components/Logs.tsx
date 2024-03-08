@@ -1,10 +1,8 @@
-import LogItem from "./LogItem";
 import { Log } from "@prisma/client";
 import Image from "next/image";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -12,6 +10,7 @@ import {
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { LogItem } from "./LogItem";
 
 type LogsProps = {
   logs: Log[];

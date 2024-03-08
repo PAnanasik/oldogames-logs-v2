@@ -48,7 +48,7 @@ const ModalInfo = () => {
               alt="Фото интерфейса"
               className="object-contain w-full h-auto"
             />
-            <p className="text-white">
+            <div className="text-white">
               Это интерфейс логов, который видите как вы, так и я. Здесь все
               просто!{" "}
               <span
@@ -78,7 +78,7 @@ const ModalInfo = () => {
               </span>{" "}
               - pagination - то есть пагинация. Здесь вы выбираете страничку с
               логами, листаете их и делаете тому подобные вещи
-            </p>
+            </div>
           </div>
           <div className="space-y-4">
             <div className="flex items-center">
@@ -93,7 +93,7 @@ const ModalInfo = () => {
               alt="Фото структуры лога"
               className="object-cover w-full h-auto"
             />
-            <p className="text-white">
+            <div className="text-white">
               Каждый лог можно поделить на три части: дата, основной текст,
               кнопка действия. Чтобы добавить лог в коробку, нужно нажать на
               плюсик. Если хочется только скопировать всю информацию лога, то
@@ -107,7 +107,7 @@ const ModalInfo = () => {
               и нажимаем на кнопку &quot;Скопировать&quot;. Если хочется точно
               представить, когда произошло событие - жмем на &quot;Посмотреть в
               календаре&quot;. Там нас встретит следующее меню
-            </p>
+            </div>
             <Image
               width={1400}
               height={1400}
@@ -115,7 +115,7 @@ const ModalInfo = () => {
               alt="Фото контекстного меню лога"
               className="object-cover w-full h-auto"
             />
-            <p className="text-white">
+            <div className="text-white">
               Здесь{" "}
               <span
                 className="text-link font-semibold md:text-md text-sm
@@ -139,7 +139,7 @@ const ModalInfo = () => {
                 имя игрока
               </span>{" "}
               откроется небольшое меню со всей его статистикой на момент лога
-            </p>
+            </div>
           </div>
           <div className="space-y-4">
             <div className="flex items-center">
@@ -153,7 +153,7 @@ const ModalInfo = () => {
               alt="Фото хранилища логов"
               className="object-cover w-full h-auto"
             />
-            <p className="text-white">
+            <div className="text-white">
               Ну здесь все просто. Скопировать один лог - нажать на кнопку,
               расположенную справа в логе. Посмотреть инфу об игроке - нажать на
               его имя. Скопировать все логи, удалить все логи, расширить
@@ -165,7 +165,7 @@ const ModalInfo = () => {
                 копирование логов
               </span>{" "}
               происходит сразу в формате ниже
-            </p>
+            </div>
             <pre
               className="bg-primary text-white p-2 border border-white border-opacity-[0.1]
             overflow-x-auto"

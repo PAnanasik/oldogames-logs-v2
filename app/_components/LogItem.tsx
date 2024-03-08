@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import parseEventDescription from "../functions/playerData";
 import PopoverCard from "./PopoverCardUser";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import {
   ContextMenu,
@@ -23,7 +24,7 @@ type LogItemProps = {
   copy: boolean;
 };
 
-const LogItem = ({ text, copy, date, id }: LogItemProps) => {
+export const LogItem = ({ text, copy, date, id }: LogItemProps) => {
   const [calendar, setShowCalendar] = useState(false);
 
   const formattedDate =
@@ -211,5 +212,3 @@ const LogItem = ({ text, copy, date, id }: LogItemProps) => {
     </ContextMenu>
   );
 };
-
-export default LogItem;
