@@ -1,5 +1,5 @@
 "use client";
-import { Category, Gamemode } from "@prisma/client";
+import { Category, Gamemode, User } from "@prisma/client";
 import Image from "next/image";
 import CategorieItem from "./CategorieItem";
 import GamemodeItem from "./GamemodeItem";
@@ -16,13 +16,20 @@ import { Tooltip } from "react-tooltip";
 import GamemodeInput from "./GamemodeInput";
 import CategoryInput from "./CategoryInput";
 import ClientOnly from "./ClientOnly";
+import Attention from "./Attention";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type SidebarProps = {
   categories: Category[];
   gamemodes: Gamemode[];
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  } | null;
 };
 
-const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
+const Sidebar = ({ categories, gamemodes, user }: SidebarProps) => {
   const [layout, setLayout] = useState("list");
 
   useEffect(() => {
@@ -104,13 +111,10 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
               </ClientOnly>
             </div>
 
-            <div className="flex gap-x-2 p-2 border border-white border-opacity-[0.1] rounded-md">
-              <AlertTriangle className="h-6 w-6 text-secondary" />
-
-              <p className="text-sm text-secondary">
-                Внимание! Режимы меняются, поэтому используйте режимы из списка
-              </p>
-            </div>
+            <Attention
+              text="Внимание! Режимы меняются, поэтому используйте режимы из списка"
+              centered={false}
+            />
           </div>
           {/* <div
             className={cn(
@@ -147,8 +151,20 @@ const Sidebar = ({ categories, gamemodes }: SidebarProps) => {
           className="h-[50px] border-t border-white border-opacity-[0.05] w-full flex items-center justify-between
         px-4 absolute bottom-0"
         >
-          <p className="font-medium text-lg">PAnanasik</p>
-          <div className="h-[40px] w-[40px] rounded-full bg-background"></div>
+          <p className="font-medium text-lg">{user?.name}</p>
+          <Avatar>
+            <AvatarImage src={user?.image!} alt={`${user?.name!} аватар`} />
+            <AvatarFallback className="bg-primary border border-white border-opacity-[0.1]">
+              <Image
+                width={40}
+                height={40}
+                quality={100}
+                src="/logo.png"
+                alt="logo image"
+                className="w-[30px] h-auto object-cover"
+              />
+            </AvatarFallback>
+          </Avatar>
         </div>
       </div>
     </div>

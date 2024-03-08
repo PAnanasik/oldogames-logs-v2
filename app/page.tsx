@@ -5,10 +5,7 @@ import Logs from "./_components/Logs";
 import prisma from "@/app/libs/prismadb";
 import { Toaster } from "sonner";
 import { getLogs } from "./actions/getLogs";
-import ClientOnly from "./_components/ClientOnly";
-import { LogItem } from "./_components/LogItem";
-import { Suspense } from "react";
-import LogsSkeleton from "./_components/LogsSkeleton";
+import { currentUser } from "@/lib/auth";
 
 type SearchPageProps = {
   searchParams: {
@@ -22,6 +19,7 @@ type SearchPageProps = {
 export default async function Home({ searchParams }: SearchPageProps) {
   const page = searchParams["page"] ?? "1";
   const limit = searchParams["limit"] ?? "100";
+  const user = await currentUser();
 
   const { logs, metadata } = await getLogs({
     query: searchParams,
@@ -32,7 +30,7 @@ export default async function Home({ searchParams }: SearchPageProps) {
   const gamemodes = await prisma.gamemode.findMany();
   const categories = await prisma.category.findMany();
 
-  if (!logs || !categories) {
+  if (!logs || !categories || !gamemodes || !metadata) {
     return null;
   }
 
@@ -49,7 +47,7 @@ export default async function Home({ searchParams }: SearchPageProps) {
         <div className="hidden md:flex h-full w-96 flex-col fixed inset-y-0 z-50">
           {/* <ClientOnly> */}
 
-          <Sidebar categories={categories} gamemodes={gamemodes} />
+          <Sidebar categories={categories} gamemodes={gamemodes} user={user} />
 
           {/* </ClientOnly> */}
         </div>

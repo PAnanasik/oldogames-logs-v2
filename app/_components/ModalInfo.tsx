@@ -191,7 +191,7 @@ const ModalInfo = () => {
               плавание, чтобы самим разобраться с тем, что не совсем ясно.
               Удачи! Добро пожаловать в команду Triangle Union
             </p>
-            <div className="w-full h-[300px] triangle-gradient rounded-md flex items-center justify-center select-none">
+            <div className="w-full h-[300px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-link/50 to-primary rounded-md flex items-center justify-center select-none">
               <Image
                 width={400}
                 height={400}
