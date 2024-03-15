@@ -37,12 +37,12 @@ const Modal = ({ currentLogs }: ModalProps) => {
       <div
         className={cn(
           "h-[250px] [&>*:first-child]:border-t-transparent",
-          currentLogs.length > 0 && "overflow-y-auto",
+          currentLogs?.length > 0 && "overflow-y-auto",
           expanded && "h-[350px]"
         )}
         id="box-modal"
       >
-        {currentLogs.map((log: Log, index) => (
+        {currentLogs?.map((log: Log, index) => (
           <LogItem
             key={index}
             id={log.id}

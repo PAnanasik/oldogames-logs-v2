@@ -18,15 +18,16 @@ type LogsProps = {
   page: number;
   hasNextPage: boolean;
   totalPages: number;
+  steamId?: string;
 };
 
-const Logs = ({ logs, page, hasNextPage, totalPages }: LogsProps) => {
+const Logs = ({ logs, page, hasNextPage, totalPages, steamId }: LogsProps) => {
   const isActive = (pageNumber: number) => pageNumber === page;
 
   return (
     <div className="md:pl-96 [&>*:last-child]:border-b-transparent [&>*:first-child]:border-t-transparent pb-[50px]">
       <ClientOnly>
-        {logs.map((log) => (
+        {logs?.map((log) => (
           <LogItem
             key={log.id}
             id={log.id}
@@ -41,7 +42,7 @@ const Logs = ({ logs, page, hasNextPage, totalPages }: LogsProps) => {
           <PaginationContent>
             <PaginationItem>
               <PaginationLink
-                href={`?page=1`}
+                href={`?steamId=${steamId}&page=1`}
                 className={cn(page === 1 && "pointer-events-none opacity-50")}
               >
                 <ChevronsLeft className="h-4 w-4" />
@@ -49,7 +50,7 @@ const Logs = ({ logs, page, hasNextPage, totalPages }: LogsProps) => {
             </PaginationItem>
             <PaginationItem>
               <PaginationPrevious
-                href={`?page=${page - 1}`}
+                href={`?steamId=${steamId}&page=${page - 1}`}
                 className={cn(page === 1 && "pointer-events-none opacity-50")}
               />
             </PaginationItem>
@@ -62,7 +63,7 @@ const Logs = ({ logs, page, hasNextPage, totalPages }: LogsProps) => {
               return (
                 <PaginationItem key={index}>
                   <PaginationLink
-                    href={`?page=${displayedPage}`}
+                    href={`?steamId=${steamId}&page=${displayedPage}`}
                     isActive={isActive(displayedPage)}
                     className={cn(
                       isActive(displayedPage) && "bg-link/10 text-link"
@@ -75,13 +76,13 @@ const Logs = ({ logs, page, hasNextPage, totalPages }: LogsProps) => {
             })}
             <PaginationItem>
               <PaginationNext
-                href={`?page=${page + 1}`}
+                href={`?steamId=${steamId}&page=${page + 1}`}
                 className={cn(!hasNextPage && "pointer-events-none opacity-50")}
               />
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                href={`?page=${totalPages}`}
+                href={`?steamId=${steamId}&page=${totalPages}`}
                 className={cn(!hasNextPage && "pointer-events-none opacity-50")}
               >
                 <ChevronsRight className="h-4 w-4" />

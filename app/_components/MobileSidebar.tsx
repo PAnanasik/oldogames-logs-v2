@@ -6,9 +6,20 @@ import { Category, Gamemode } from "@prisma/client";
 type MobileSidebarProps = {
   categories: Category[];
   gamemodes: Gamemode[];
+  steamId?: string;
+  user: {
+    personaname: string;
+    steamid: string;
+    avatarfull: string;
+  };
 };
 
-const MobileSidebar = ({ categories, gamemodes }: MobileSidebarProps) => {
+const MobileSidebar = ({
+  categories,
+  gamemodes,
+  steamId,
+  user,
+}: MobileSidebarProps) => {
   return (
     <Sheet>
       <SheetTrigger className="pr-4 md:hidden">
@@ -19,7 +30,12 @@ const MobileSidebar = ({ categories, gamemodes }: MobileSidebarProps) => {
         className="p-0 bg-primary border-r border-white
       border-opacity-[0.05]"
       >
-        <Sidebar categories={categories} gamemodes={gamemodes} />
+        <Sidebar
+          categories={categories}
+          gamemodes={gamemodes}
+          user={user}
+          steamId={steamId}
+        />
       </SheetContent>
     </Sheet>
   );

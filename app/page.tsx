@@ -8,11 +8,11 @@ import { getLogs } from "./actions/getLogs";
 import { redirect } from "next/navigation";
 import isValidSteamId from "@/utils/steamId";
 
-type SearchPageProps = {
+type PageProps = {
   searchParams: {
-    text: string;
-    categoryId: string;
-    gamemodeId: string;
+    text?: string;
+    categoryId?: string;
+    gamemodeId?: string;
     [key: string]: string | string[] | undefined;
     steamId?: string;
   };
@@ -23,7 +23,7 @@ async function getPlayerData(steamId: string) {
     `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${steamId}`,
     {
       next: {
-        revalidate: 3600,
+        revalidate: 5,
       },
     }
   );
@@ -37,8 +37,13 @@ async function getPlayerData(steamId: string) {
   return data.response.players[0];
 }
 
-export default async function Home({ searchParams }: SearchPageProps) {
+export default async function Home({ searchParams }: PageProps) {
   const steamId = searchParams?.steamId;
+
+  if (!steamId || !isValidSteamId(steamId)) {
+    return redirect("/login");
+  }
+
   const page = searchParams["page"] ?? "1";
   const limit = searchParams["limit"] ?? "100";
 
@@ -51,43 +56,37 @@ export default async function Home({ searchParams }: SearchPageProps) {
   const gamemodes = await prisma.gamemode.findMany();
   const categories = await prisma.category.findMany();
 
-  if (
-    !logs ||
-    !categories ||
-    !gamemodes ||
-    !metadata ||
-    // !steamId ||
-    !isValidSteamId(steamId!)
-  ) {
-    return redirect("/login");
-  }
+  const accountData = await getPlayerData(steamId);
 
-  const accountData = await getPlayerData(steamId!);
+  console.log(accountData);
 
   return (
     <>
       <main className="h-full">
         <div className="h-[50px]">
           {/* <ClientOnly> */}
-
-          <Navbar categories={categories} gamemodes={gamemodes} />
-
+          <Navbar
+            categories={categories}
+            gamemodes={gamemodes}
+            user={accountData}
+            steamId={steamId}
+          />
           {/* </ClientOnly> */}
         </div>
         <div className="hidden md:flex h-full w-96 flex-col fixed inset-y-0 z-50">
           {/* <ClientOnly> */}
-
           <Sidebar
             categories={categories}
             gamemodes={gamemodes}
             user={accountData}
+            steamId={steamId}
           />
 
           {/* </ClientOnly> */}
         </div>
         {/* <ClientOnly> */}
 
-        <Logs logs={logs} page={Number(page)} {...metadata} />
+        <Logs logs={logs} page={Number(page)} steamId={steamId} {...metadata} />
 
         {/* </ClientOnly> */}
       </main>

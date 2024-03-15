@@ -12,9 +12,14 @@ import ModalInfo from "./ModalInfo";
 type NavbarRoutesProps = {
   categories: Category[];
   gamemodes: Gamemode[];
+  steamId?: string;
 };
 
-const NavbarRoutes = ({ categories, gamemodes }: NavbarRoutesProps) => {
+const NavbarRoutes = ({
+  categories,
+  gamemodes,
+  steamId,
+}: NavbarRoutesProps) => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -35,7 +40,7 @@ const NavbarRoutes = ({ categories, gamemodes }: NavbarRoutesProps) => {
   return (
     <nav className="w-full h-full text-white bg-primary flex items-center justify-between gap-x-4">
       <div className="md:pl-96 w-full">
-        <SearchInput />
+        <SearchInput steamId={steamId} />
       </div>
       <div className="cursor-pointer hover:bg-secondary/15 rounded-full ease duration-300 flex items-center w-auto">
         <ModalInfo />

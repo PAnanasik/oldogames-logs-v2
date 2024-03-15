@@ -16,14 +16,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 type SidebarProps = {
   categories: Category[];
   gamemodes: Gamemode[];
-  user?: {
-    personaname?: string | null;
-    steamid?: string | null;
-    avatarfull?: string | null;
-  } | null;
+  user: {
+    personaname: string;
+    steamid: string;
+    avatarfull: string;
+  };
+  steamId?: string;
 };
 
-const Sidebar = ({ categories, gamemodes, user }: SidebarProps) => {
+const Sidebar = ({ categories, gamemodes, user, steamId }: SidebarProps) => {
   const [layout, setLayout] = useState("list");
 
   useEffect(() => {
@@ -43,10 +44,6 @@ const Sidebar = ({ categories, gamemodes, user }: SidebarProps) => {
       return newLayout;
     });
   };
-
-  if (!categories || !gamemodes) {
-    return <div className="w-[500px] h-[500px] bg-white"></div>;
-  }
 
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-primary border-r border-white border-opacity-[0.05] w-full">
@@ -87,7 +84,7 @@ const Sidebar = ({ categories, gamemodes, user }: SidebarProps) => {
             <Tooltip id="layout-tooltip" />
           </div>
           <div className="w-full h-auto space-y-2">
-            <GamemodeInput />
+            <GamemodeInput steamId={steamId} />
             <div
               className={cn(
                 "grid md:grid-cols-2 gap-2 max-h-[200px] overflow-y-auto",
@@ -128,7 +125,7 @@ const Sidebar = ({ categories, gamemodes, user }: SidebarProps) => {
             <AlignLeft className="h-4 w-4 mr-1 text-secondary" />
             <h2 className="text-secondary font-medium text-lg">Категории</h2>
           </div>
-          <CategoryInput />
+          <CategoryInput steamId={steamId} />
           <div className="flex items-center gap-2 pb-2 flex-wrap max-h-[300px] overflow-y-auto">
             <ClientOnly>
               {categories?.map((category) => (
@@ -145,11 +142,11 @@ const Sidebar = ({ categories, gamemodes, user }: SidebarProps) => {
           className="h-[50px] border-t border-white border-opacity-[0.05] w-full flex items-center justify-between
         px-4 absolute bottom-0"
         >
-          <p className="font-medium text-lg">{user?.personaname}</p>
+          <p className="font-medium text-lg">{user.personaname}</p>
           <Avatar>
             <AvatarImage
-              src={user?.avatarfull!}
-              alt={`${user?.personaname!} аватар`}
+              src={user.avatarfull}
+              alt={`${user.personaname} аватар`}
             />
             <AvatarFallback className="bg-primary border border-white border-opacity-[0.1]">
               <Image
