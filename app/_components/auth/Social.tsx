@@ -1,9 +1,7 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { BsDiscord, BsSteam } from "react-icons/bs";
+import { BsSteam } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useRouter } from "next/navigation";
 
 const Social = () => {
