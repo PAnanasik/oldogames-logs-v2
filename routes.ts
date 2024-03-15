@@ -1,3 +1,3 @@
-export const authRoutes = ["/auth/login"];
+export const authRoutes = ["/login"];
 export const protectedRoute = "/";
-export const DEFAULT_LOGIN_REDIRECT = "/auth/login";
+export const DEFAULT_LOGIN_REDIRECT = "/login";

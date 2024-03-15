@@ -1,15 +1,16 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { BsDiscord } from "react-icons/bs";
+import { BsDiscord, BsSteam } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { useRouter } from "next/navigation";
 
 const Social = () => {
-  const onClick = (provider: "discord") => {
-    signIn(provider, {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
-    });
+  const router = useRouter();
+
+  const onClick = () => {
+    return router.push("/auth-user/steam");
   };
   return (
     <div className="flex items-center w-full gap-x-2">
@@ -17,9 +18,9 @@ const Social = () => {
         size={"lg"}
         className="w-full"
         variant={"outline"}
-        onClick={() => onClick("discord")}
+        onClick={() => onClick()}
       >
-        <BsDiscord className="h-5 w-5 mr-2" />
+        <BsSteam className="h-5 w-5 mr-2" />
       </Button>
     </div>
   );

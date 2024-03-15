@@ -6,6 +6,8 @@ import prisma from "@/app/libs/prismadb";
 import { Toaster } from "sonner";
 import { getLogs } from "./actions/getLogs";
 import { currentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import isValidSteamId from "@/utils/steamId";
 
 type SearchPageProps = {
   searchParams: {
@@ -13,10 +15,31 @@ type SearchPageProps = {
     categoryId: string;
     gamemodeId: string;
     [key: string]: string | string[] | undefined;
+    steamId?: string;
   };
 };
 
+async function getPlayerData(steamId: string) {
+  const response = await fetch(
+    `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${steamId}`,
+    {
+      next: {
+        revalidate: 3600,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch player data");
+  }
+
+  const data = await response.json();
+
+  return data.response.players[0];
+}
+
 export default async function Home({ searchParams }: SearchPageProps) {
+  const steamId = searchParams?.steamId;
   const page = searchParams["page"] ?? "1";
   const limit = searchParams["limit"] ?? "100";
   const user = await currentUser();
@@ -30,9 +53,18 @@ export default async function Home({ searchParams }: SearchPageProps) {
   const gamemodes = await prisma.gamemode.findMany();
   const categories = await prisma.category.findMany();
 
-  if (!logs || !categories || !gamemodes || !metadata) {
-    return null;
+  if (
+    !logs ||
+    !categories ||
+    !gamemodes ||
+    !metadata ||
+    !steamId ||
+    !isValidSteamId(steamId)
+  ) {
+    return redirect("/auth/login");
   }
+
+  const accountData = await getPlayerData(steamId);
 
   return (
     <>
@@ -47,7 +79,11 @@ export default async function Home({ searchParams }: SearchPageProps) {
         <div className="hidden md:flex h-full w-96 flex-col fixed inset-y-0 z-50">
           {/* <ClientOnly> */}
 
-          <Sidebar categories={categories} gamemodes={gamemodes} user={user} />
+          <Sidebar
+            categories={categories}
+            gamemodes={gamemodes}
+            user={accountData}
+          />
 
           {/* </ClientOnly> */}
         </div>

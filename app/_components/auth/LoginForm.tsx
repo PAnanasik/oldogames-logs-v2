@@ -13,7 +13,7 @@ const LoginForm = () => {
       <div className="w-full rounded-md flex flex-col items-center justify-center select-none space-y-4">
         <div>
           <Attention
-            text="Авторизуйтесь через дискорд, чтобы продолжить работу с логами"
+            text="Авторизуйтесь через steam, чтобы продолжить работу с логами"
             centered={false}
           />
         </div>
