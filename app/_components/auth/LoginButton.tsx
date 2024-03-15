@@ -12,7 +12,7 @@ const LoginButton = ({ children, mode, asChild }: LoginButtonProps) => {
   const router = useRouter();
 
   const onClick = () => {
-    router.push("/auth/login");
+    router.push("/auth/steam");
   };
 
   if (mode === "modal") {

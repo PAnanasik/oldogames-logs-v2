@@ -5,7 +5,6 @@ import Logs from "./_components/Logs";
 import prisma from "@/app/libs/prismadb";
 import { Toaster } from "sonner";
 import { getLogs } from "./actions/getLogs";
-import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import isValidSteamId from "@/utils/steamId";
 
@@ -42,7 +41,6 @@ export default async function Home({ searchParams }: SearchPageProps) {
   const steamId = searchParams?.steamId;
   const page = searchParams["page"] ?? "1";
   const limit = searchParams["limit"] ?? "100";
-  const user = await currentUser();
 
   const { logs, metadata } = await getLogs({
     query: searchParams,
@@ -58,13 +56,13 @@ export default async function Home({ searchParams }: SearchPageProps) {
     !categories ||
     !gamemodes ||
     !metadata ||
-    !steamId ||
-    !isValidSteamId(steamId)
+    // !steamId ||
+    !isValidSteamId(steamId!)
   ) {
-    return redirect("/auth/login");
+    return redirect("/login");
   }
 
-  const accountData = await getPlayerData(steamId);
+  const accountData = await getPlayerData(steamId!);
 
   return (
     <>

@@ -3,13 +3,7 @@ import { Category, Gamemode, User } from "@prisma/client";
 import Image from "next/image";
 import CategorieItem from "./CategorieItem";
 import GamemodeItem from "./GamemodeItem";
-import {
-  AlertTriangle,
-  AlignLeft,
-  Folder,
-  GalleryVerticalEnd,
-  Grid,
-} from "lucide-react";
+import { AlignLeft, Folder, GalleryVerticalEnd, Grid } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Tooltip } from "react-tooltip";
@@ -23,9 +17,9 @@ type SidebarProps = {
   categories: Category[];
   gamemodes: Gamemode[];
   user?: {
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
+    personaname?: string | null;
+    steamid?: string | null;
+    avatarfull?: string | null;
   } | null;
 };
 
@@ -151,9 +145,12 @@ const Sidebar = ({ categories, gamemodes, user }: SidebarProps) => {
           className="h-[50px] border-t border-white border-opacity-[0.05] w-full flex items-center justify-between
         px-4 absolute bottom-0"
         >
-          <p className="font-medium text-lg">{user?.name}</p>
+          <p className="font-medium text-lg">{user?.personaname}</p>
           <Avatar>
-            <AvatarImage src={user?.image!} alt={`${user?.name!} аватар`} />
+            <AvatarImage
+              src={user?.avatarfull!}
+              alt={`${user?.personaname!} аватар`}
+            />
             <AvatarFallback className="bg-primary border border-white border-opacity-[0.1]">
               <Image
                 width={40}

@@ -10,7 +10,7 @@ const Social = () => {
   const router = useRouter();
 
   const onClick = () => {
-    return router.push("/auth-user/steam");
+    return router.push("/auth/steam");
   };
   return (
     <div className="flex items-center w-full gap-x-2">
