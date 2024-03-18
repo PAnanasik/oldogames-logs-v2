@@ -54,9 +54,9 @@ const Logs = ({ logs, page, hasNextPage, totalPages, steamId }: LogsProps) => {
                 className={cn(page === 1 && "pointer-events-none opacity-50")}
               />
             </PaginationItem>
-            {Array.from({ length: Math.min(totalPages, 4) }).map((_, index) => {
+            {Array.from({ length: Math.min(totalPages, 3) }).map((_, index) => {
               const displayedPage = Math.min(
-                totalPages - Math.max(3, totalPages - page + 1) + index,
+                totalPages - Math.max(2, totalPages - page + 1) + index,
                 totalPages
               );
               if (displayedPage <= 0) return null;

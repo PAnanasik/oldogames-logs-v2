@@ -103,8 +103,7 @@ export const LogItem = ({ text, copy, date, id }: LogItemProps) => {
         !(
           log.formattedDateLogs === formattedDateLogs &&
           log.text === text &&
-          log.id === id &&
-          log.date === date
+          log.id === id
         )
     );
     localStorage.setItem("logs", JSON.stringify(updatedLogs));
@@ -120,7 +119,12 @@ export const LogItem = ({ text, copy, date, id }: LogItemProps) => {
         ? JSON.parse(localStorage.getItem("logs") || "[]")
         : [];
     const exists = currentLogs.some(
-      (log: { formattedDateLogs: string; text: string; id: number }) =>
+      (log: {
+        formattedDateLogs: string;
+        text: string;
+        id: number;
+        date: Date;
+      }) =>
         log.formattedDateLogs === formattedDateLogs &&
         log.text === text &&
         log.id === id

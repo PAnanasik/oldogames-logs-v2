@@ -29,7 +29,7 @@ async function getPlayerData(steamId: string) {
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch player data");
+    return redirect("/login");
   }
 
   const data = await response.json();
@@ -39,8 +39,13 @@ async function getPlayerData(steamId: string) {
 
 export default async function Home({ searchParams }: PageProps) {
   const steamId = searchParams?.steamId;
+  const qadmin = await prisma.qadmin_players.findUnique({
+    where: {
+      steamid: steamId,
+    },
+  });
 
-  if (!steamId || !isValidSteamId(steamId)) {
+  if (!steamId || !isValidSteamId(steamId) || !qadmin) {
     return redirect("/login");
   }
 

@@ -107,20 +107,6 @@ const Sidebar = ({ categories, gamemodes, user, steamId }: SidebarProps) => {
               centered={false}
             />
           </div>
-          {/* <div
-            className={cn(
-              "grid md:grid-cols-2 gap-2",
-              layout === "list" && "flex flex-col"
-            )}
-          >
-            {gamemodes?.map((gamemode) => (
-              <GamemodeItem
-                key={gamemode.id}
-                id={gamemode.id}
-                name={gamemode.name}
-              />
-            ))}
-          </div> */}
           <div className="flex items-center">
             <AlignLeft className="h-4 w-4 mr-1 text-secondary" />
             <h2 className="text-secondary font-medium text-lg">Категории</h2>
