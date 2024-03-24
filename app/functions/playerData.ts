@@ -46,12 +46,9 @@ export default function parseEventDescription(description: string): EventData {
 function getPlayerVariables(playerText: string): Record<string, string> {
   const variables: Record<string, string> = {};
 
-  // Используем регулярное выражение для поиска пар ключ-значение
   const keyValuePairs = playerText.match(/"([^"]+)"\s*:\s*("[^"]+"|\d+)/g);
 
-  // Проверяем, что переменные найдены
   if (keyValuePairs) {
-    // Проходим по каждой паре ключ-значение и добавляем их в объект переменных
     for (const pair of keyValuePairs) {
       const [key, value] = pair
         .split(":")
@@ -62,5 +59,3 @@ function getPlayerVariables(playerText: string): Record<string, string> {
 
   return variables;
 }
-
-

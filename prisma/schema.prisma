@@ -36,7 +36,6 @@ model Gamemode {
   Log  Log[]
 }
 
-
 model qadmin_players {
   steamid String @unique
   rank    String

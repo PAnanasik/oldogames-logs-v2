@@ -3,7 +3,7 @@ const { PrismaClient } = require("@prisma/client");
 const db = new PrismaClient();
 
 const data = Array.from({ length: 100 }).map(() => ({
-  text: `[Игрок 1|"var1": "somevar", "var2": 123] убил [Игрок 2|"var1": "somevar", "var2": 123]`,
+  text: ` `,
   categoryId: "52ec9ada-23f2-4e7e-9bb8-cab987bde357",
   gamemodeId: "ebf9311a-5839-4cd6-b209-f15fc1430f53",
 }));

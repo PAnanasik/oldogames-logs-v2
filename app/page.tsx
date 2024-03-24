@@ -3,7 +3,7 @@ import Navbar from "./_components/Navbar";
 import Logs from "./_components/Logs";
 
 import prisma from "@/app/libs/prismadb";
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
 import { getLogs } from "./actions/getLogs";
 import { redirect } from "next/navigation";
 import isValidSteamId from "@/utils/steamId";
@@ -39,13 +39,18 @@ async function getPlayerData(steamId: string) {
 
 export default async function Home({ searchParams }: PageProps) {
   const steamId = searchParams?.steamId;
+
+  if (!steamId || !isValidSteamId(steamId)) {
+    return redirect("/login");
+  }
+
   const qadmin = await prisma.qadmin_players.findUnique({
     where: {
       steamid: steamId,
     },
   });
 
-  if (!steamId || !isValidSteamId(steamId) || !qadmin) {
+  if (!qadmin) {
     return redirect("/login");
   }
 
