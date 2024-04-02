@@ -5,15 +5,18 @@ import { Category, Gamemode } from "@prisma/client";
 type NavbarProps = {
   categories: Category[];
   gamemodes: Gamemode[];
-  steamId?: string;
   user: {
     personaname: string;
     steamid: string;
     avatarfull: string;
   };
+  qadmin: {
+    steamid: string;
+    rank: string;
+  };
 };
 
-const Navbar = ({ categories, gamemodes, steamId, user }: NavbarProps) => {
+const Navbar = ({ categories, gamemodes, user, qadmin }: NavbarProps) => {
   return (
     <div
       className="h-[50px] px-4 border-b border-white border-opacity-[0.05] flex items-center
@@ -22,14 +25,10 @@ const Navbar = ({ categories, gamemodes, steamId, user }: NavbarProps) => {
       <MobileSidebar
         categories={categories}
         gamemodes={gamemodes}
-        steamId={steamId}
         user={user}
+        qadmin={qadmin}
       />
-      <NavbarRoutes
-        categories={categories}
-        gamemodes={gamemodes}
-        steamId={steamId}
-      />
+      <NavbarRoutes categories={categories} gamemodes={gamemodes} />
     </div>
   );
 };

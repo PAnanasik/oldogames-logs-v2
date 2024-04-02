@@ -27,7 +27,6 @@ type LogItemProps = {
 export const LogItem = ({ text, copy, date, id }: LogItemProps) => {
   const [calendar, setShowCalendar] = useState(false);
 
-
   const formattedDate =
     date.toLocaleString("en-US", { month: "short", day: "numeric" }) +
     ", " +
@@ -47,7 +46,7 @@ export const LogItem = ({ text, copy, date, id }: LogItemProps) => {
 
   const eventData = parseEventDescription(text);
 
-  console.log(eventData)
+  console.log(eventData);
 
   const copyTextToClipboard = async ({
     formattedDateLogs,

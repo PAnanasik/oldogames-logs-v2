@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { useEffect, useState } from "react";
 
-const GamemodeInput = ({ steamId }: { steamId?: string }) => {
+const GamemodeInput = () => {
   const [value, setValue] = useState("");
   const debouncedValue = useDebounce(value);
 
@@ -24,7 +24,6 @@ const GamemodeInput = ({ steamId }: { steamId?: string }) => {
       {
         url: pathname || "",
         query: {
-          steamId: steamId,
           categoryId: currentCategoryId,
           gamemodeId: debouncedValue,
           text: currentText,
@@ -41,7 +40,6 @@ const GamemodeInput = ({ steamId }: { steamId?: string }) => {
     pathname,
     currentText,
     currentPage,
-    steamId,
   ]);
 
   return (

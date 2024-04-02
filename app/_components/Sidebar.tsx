@@ -1,9 +1,17 @@
 "use client";
-import { Category, Gamemode, User } from "@prisma/client";
+import { Category, Gamemode } from "@prisma/client";
 import Image from "next/image";
 import CategorieItem from "./CategorieItem";
 import GamemodeItem from "./GamemodeItem";
-import { AlignLeft, Folder, GalleryVerticalEnd, Grid } from "lucide-react";
+import {
+  AlignLeft,
+  CaptionsIcon,
+  Clock,
+  Folder,
+  GalleryVerticalEnd,
+  Grid,
+  User,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Tooltip } from "react-tooltip";
@@ -12,6 +20,11 @@ import CategoryInput from "./CategoryInput";
 import ClientOnly from "./ClientOnly";
 import Attention from "./Attention";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 
 type SidebarProps = {
   categories: Category[];
@@ -21,10 +34,13 @@ type SidebarProps = {
     steamid: string;
     avatarfull: string;
   };
-  steamId?: string;
+  qadmin: {
+    steamid: string;
+    rank: string;
+  };
 };
 
-const Sidebar = ({ categories, gamemodes, user, steamId }: SidebarProps) => {
+const Sidebar = ({ categories, gamemodes, user, qadmin }: SidebarProps) => {
   const [layout, setLayout] = useState("list");
 
   useEffect(() => {
@@ -44,6 +60,8 @@ const Sidebar = ({ categories, gamemodes, user, steamId }: SidebarProps) => {
       return newLayout;
     });
   };
+
+  console.log(user);
 
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-primary border-r border-white border-opacity-[0.05] w-full">
@@ -84,7 +102,7 @@ const Sidebar = ({ categories, gamemodes, user, steamId }: SidebarProps) => {
             <Tooltip id="layout-tooltip" />
           </div>
           <div className="w-full h-auto space-y-2">
-            <GamemodeInput steamId={steamId} />
+            <GamemodeInput />
             <div
               className={cn(
                 "grid md:grid-cols-2 gap-2 max-h-[200px] overflow-y-auto",
@@ -111,7 +129,7 @@ const Sidebar = ({ categories, gamemodes, user, steamId }: SidebarProps) => {
             <AlignLeft className="h-4 w-4 mr-1 text-secondary" />
             <h2 className="text-secondary font-medium text-lg">Категории</h2>
           </div>
-          <CategoryInput steamId={steamId} />
+          <CategoryInput />
           <div className="flex items-center gap-2 pb-2 flex-wrap max-h-[300px] overflow-y-auto">
             <ClientOnly>
               {categories?.map((category) => (
@@ -124,28 +142,48 @@ const Sidebar = ({ categories, gamemodes, user, steamId }: SidebarProps) => {
             </ClientOnly>
           </div>
         </div>
-        <div
-          className="h-[50px] border-t border-white border-opacity-[0.05] w-full flex items-center justify-between
-        px-4 absolute bottom-0"
-        >
-          <p className="font-medium text-lg">{user.personaname}</p>
-          <Avatar>
-            <AvatarImage
-              src={user.avatarfull}
-              alt={`${user.personaname} аватар`}
-            />
-            <AvatarFallback className="bg-primary border border-white border-opacity-[0.1]">
-              <Image
-                width={40}
-                height={40}
-                quality={100}
-                src="/logo.png"
-                alt="logo image"
-                className="w-[30px] h-auto object-cover"
-              />
-            </AvatarFallback>
-          </Avatar>
-        </div>
+        <Popover>
+          <PopoverTrigger asChild>
+            <div
+              className="h-[50px] border-t border-white border-opacity-[0.05] w-full flex items-center justify-between
+        px-4 absolute bottom-0 cursor-pointer"
+            >
+              <p className="font-medium text-lg">{user.personaname}</p>
+              <Avatar>
+                <AvatarImage
+                  src={user.avatarfull}
+                  alt={`${user.personaname} аватар`}
+                />
+                <AvatarFallback className="bg-primary border border-white border-opacity-[0.1]">
+                  <Image
+                    width={40}
+                    height={40}
+                    quality={100}
+                    src="/logo.png"
+                    alt="logo image"
+                    className="w-[30px] h-auto object-cover"
+                  />
+                </AvatarFallback>
+              </Avatar>
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 bg-background space-y-4">
+            <div className="text-white flex items-center justify-between">
+              <div className="flex items-center justify-between">
+                <CaptionsIcon className="h-4 w-4 mr-2" />
+                <p>STEAM_ID</p>
+              </div>
+              <pre>{qadmin.steamid}</pre>
+            </div>
+            <div className="text-white flex items-center justify-between">
+              <div className="flex items-center justify-between">
+                <User className="h-4 w-4 mr-2" />
+                <p>Ваш ранг</p>
+              </div>
+              <pre>{qadmin.rank}</pre>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );

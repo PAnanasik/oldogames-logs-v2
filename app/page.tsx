@@ -3,10 +3,13 @@ import Navbar from "./_components/Navbar";
 import Logs from "./_components/Logs";
 
 import prisma from "@/app/libs/prismadb";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import { getLogs } from "./actions/getLogs";
 import { redirect } from "next/navigation";
-import isValidSteamId from "@/utils/steamId";
+import { getSession } from "@/lib";
+import getSteamRelyingParty, {
+  getSteamAuthenticationURL,
+} from "@/utils/auth/steam";
 
 type PageProps = {
   searchParams: {
@@ -18,32 +21,14 @@ type PageProps = {
   };
 };
 
-async function getPlayerData(steamId: string) {
-  const response = await fetch(
-    `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${steamId}`,
-    {
-      next: {
-        revalidate: 5,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    return redirect("/login");
-  }
-
-  const data = await response.json();
-
-  return data.response.players[0];
-}
-
 export default async function Home({ searchParams }: PageProps) {
-  const steamId = searchParams?.steamId;
+  const session = await getSession();
 
-  if (!steamId || !isValidSteamId(steamId)) {
+  if (!session) {
     return redirect("/login");
   }
 
+  const steamId = session.accountData.steamid;
   const qadmin = await prisma.qadmin_players.findUnique({
     where: {
       steamid: steamId,
@@ -66,10 +51,6 @@ export default async function Home({ searchParams }: PageProps) {
   const gamemodes = await prisma.gamemode.findMany();
   const categories = await prisma.category.findMany();
 
-  const accountData = await getPlayerData(steamId);
-
-  console.log(accountData);
-
   return (
     <>
       <main className="h-full">
@@ -78,8 +59,8 @@ export default async function Home({ searchParams }: PageProps) {
           <Navbar
             categories={categories}
             gamemodes={gamemodes}
-            user={accountData}
-            steamId={steamId}
+            user={session.accountData}
+            qadmin={qadmin}
           />
           {/* </ClientOnly> */}
         </div>
@@ -88,15 +69,15 @@ export default async function Home({ searchParams }: PageProps) {
           <Sidebar
             categories={categories}
             gamemodes={gamemodes}
-            user={accountData}
-            steamId={steamId}
+            user={session.accountData}
+            qadmin={qadmin}
           />
 
           {/* </ClientOnly> */}
         </div>
         {/* <ClientOnly> */}
 
-        <Logs logs={logs} page={Number(page)} steamId={steamId} {...metadata} />
+        <Logs logs={logs} page={Number(page)} {...metadata} />
 
         {/* </ClientOnly> */}
       </main>

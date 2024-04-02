@@ -6,19 +6,22 @@ import { Category, Gamemode } from "@prisma/client";
 type MobileSidebarProps = {
   categories: Category[];
   gamemodes: Gamemode[];
-  steamId?: string;
   user: {
     personaname: string;
     steamid: string;
     avatarfull: string;
+  };
+  qadmin: {
+    steamid: string;
+    rank: string;
   };
 };
 
 const MobileSidebar = ({
   categories,
   gamemodes,
-  steamId,
   user,
+  qadmin,
 }: MobileSidebarProps) => {
   return (
     <Sheet>
@@ -34,7 +37,7 @@ const MobileSidebar = ({
           categories={categories}
           gamemodes={gamemodes}
           user={user}
-          steamId={steamId}
+          qadmin={qadmin}
         />
       </SheetContent>
     </Sheet>
