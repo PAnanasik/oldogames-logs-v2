@@ -46,8 +46,6 @@ export const LogItem = ({ text, copy, date, id }: LogItemProps) => {
 
   const eventData = parseEventDescription(text);
 
-  console.log(eventData);
-
   const copyTextToClipboard = async ({
     formattedDateLogs,
     text,

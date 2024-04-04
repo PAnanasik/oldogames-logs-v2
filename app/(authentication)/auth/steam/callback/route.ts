@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const callback = await getSteamAuthenticationURL();
   const accountData = await getPlayerData(identifier);
 
-  const expires = new Date(Date.now() + 3600 * 1000);
+  const expires = new Date(Date.now() + 1209600 * 1000);
   const session = await encrypt({ accountData, expires });
 
   cookies().set("session", session, {

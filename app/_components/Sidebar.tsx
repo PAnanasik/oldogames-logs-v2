@@ -61,8 +61,6 @@ const Sidebar = ({ categories, gamemodes, user, qadmin }: SidebarProps) => {
     });
   };
 
-  console.log(user);
-
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-primary border-r border-white border-opacity-[0.05] w-full">
       <div className=" text-white flex flex-col h-full w-full">

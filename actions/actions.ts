@@ -30,7 +30,7 @@ export const deleteCategory = async (categoryId: string) => {
     if (error instanceof Error) {
       return { error: error.message };
     } else {
-      return { error: String(error) }; // преобразуем в строку, если не является объектом ошибки
+      return { error: String(error) };
     }
   }
 };
